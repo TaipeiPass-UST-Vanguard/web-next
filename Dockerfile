@@ -1,6 +1,6 @@
 FROM node:20-alpine3.20 AS dependencies
 
-WORKDIR /app
+WORKDIR /package
 COPY ./package.json ./yarn.lock ./
 
 RUN yarn install --frozen-lockfile && \
@@ -8,9 +8,10 @@ RUN yarn install --frozen-lockfile && \
 
 FROM dependencies
 
-COPY ./* ./
+WORKDIR /app
+COPY . .
 
-RUN yarn build
+RUN cp -r /package/* . && yarn build
 
 EXPOSE 3000
 CMD [ "yarn", "run", "start" ]
