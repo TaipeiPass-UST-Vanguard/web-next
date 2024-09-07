@@ -77,7 +77,7 @@ export function NavBar({ user }: {
               <FormItem className="w-full">
                 <FormControl>
                   <Input
-                    placeholder="Search"
+                    placeholder="搜尋二手物品"
                     className={cn(
                       'w-full text-md border-0 bg-transparent px-2 py-1 m-0 shadow-none',
                     )}
