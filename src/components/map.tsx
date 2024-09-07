@@ -30,16 +30,18 @@ const storageUsecase = new StorageUsecase(new StorageRepoImpl());
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 
 type MapProps = {
+  position: LatLngTuple;
   locations?: LatLngTuple[];
   zoom?: number;
   onClick?: (index: number) => void;
 };
 
 export default function Map({
-
+  position,
   zoom = 18,
 }: MapProps) {
-  const [position, setPosition] = useState<LatLngTuple | null>(null);
+
+  // const [position, setPosition] = useState<LatLngTuple | null>(null);
   const [open, setOpen] = useState(false);
 
   const [storageGroups, setStorageGroups] = useState<StorageGroupViewModel[]>([]);
@@ -51,20 +53,20 @@ export default function Map({
   }
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        console.log(`Location: ${pos.coords.latitude}, ${pos.coords.longitude}`);
-        setPosition([pos.coords.latitude, pos.coords.longitude]);
-      },
-      (error) => {
-        console.error(`Error getting location: ${error.message}`);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
-      }
-    );
+    // navigator.geolocation.getCurrentPosition(
+    //   (pos) => {
+    //     console.log(`Location: ${pos.coords.latitude}, ${pos.coords.longitude}`);
+    //     setPosition([pos.coords.latitude, pos.coords.longitude]);
+    //   },
+    //   (error) => {
+    //     console.error(`Error getting location: ${error.message}`);
+    //   },
+    //   {
+    //     enableHighAccuracy: true,
+    //     timeout: 10000,
+    //     maximumAge: 0,
+    //   }
+    // );
     fetchAllStorageGroup().catch(console.error);
   }, []);
 

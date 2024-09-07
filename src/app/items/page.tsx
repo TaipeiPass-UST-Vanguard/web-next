@@ -33,7 +33,7 @@ export default function Page() {
         <NavBar user={fakeUser} />
       </div>
       <div className="absolute inset-0 z-0">
-        <Map/>
+        {/* <Map/> */}
       </div>
     </div>
   );
