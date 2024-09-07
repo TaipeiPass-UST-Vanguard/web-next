@@ -35,7 +35,7 @@ export function NavBar({user} : {
 
     function onSubmit(values: SearchFormSchema){
         console.log(values)
-        // router.push('/search?item=' + values.name)
+        
         form.reset(
             {
                 name: ''
