@@ -15,8 +15,8 @@ export default class CommodityRepoImpl implements CommodityRepo {
     }: CommodityQueryParams): Promise<CommodityEntity[]> {
         const params: any = {};
         if (location !== undefined) {
-            params.lat = location[0];
-            params.lng = location[1];
+            params.latitude = location[0];
+            params.longitude= location[1];
         }
         if (keyword !== undefined) params.keyword = keyword;
         if (storageGroupId !== undefined) params.storageGroupId = storageGroupId;
