@@ -19,7 +19,7 @@ export default function Timer({
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setDuration(prev => {
-				if (prev.seconds < 1) {
+				if (prev.seconds < 1 && prev.minutes < 1 && prev.hours < 1) {
 					onExpire?.();
 					clearInterval(interval);
 					return Duration.fromMillis(0);
