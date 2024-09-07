@@ -54,7 +54,7 @@ export default class CommodityRepoImpl implements CommodityRepo {
         return CommodityDto.fromJson(response.data["data"]);
     }
 
-    async update(id: number, params: Partial<CommodityEntity>): Promise<CommodityEntity> {
+    async update(id: number, params: Partial<CommodityEntity>): Promise<void> {
         const response = await axios.patch(new URL(`/api/commodity/commodity/${id}`, BACKEND_URL).href, params, {
             headers: {
                 "Content-Type": "application/json",
@@ -62,8 +62,6 @@ export default class CommodityRepoImpl implements CommodityRepo {
         });
 
         if (response.status!== 204) return Promise.reject(response);
-
-        return CommodityDto.fromJson(response.data["data"]);
     }
 
     async delete(id: number): Promise<void> {

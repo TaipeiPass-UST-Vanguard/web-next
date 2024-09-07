@@ -15,10 +15,15 @@ import { useContext, useState } from "react";
 import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel";
 import { CommodityQueryParams } from "@/module/commodity/domain/commodityRepo";
 import { PositionContext } from "../_context/positionContext";
+import CommodityStatus from "@/module/commodity/domain/commodityStatus";
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 
 async function search({ keyword, location }: CommodityQueryParams) {
-  const entities = await commodityUsecase.getAllCommodity({ keyword, location });
+  const entities = await commodityUsecase.getAllCommodity({
+    keyword: keyword,
+    location: location,
+    status: CommodityStatus.pending,
+  });
   const newList: CommodityEntity[] = [];
   entities.map((item, _) => {
     newList.push(item)

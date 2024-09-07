@@ -123,6 +123,7 @@ function StorageDrawerCardContent({
       const commodity = await commodityUsecase.getCommodityById(entity.commodityId);
       if (commodity.status === CommodityStatus.pending) pendingStorages.push(new StorageViewModel(entity));
     }
+    console.debug(pendingStorages);
     setStorages(pendingStorages);
   }
   const route = useRouter();
@@ -134,7 +135,7 @@ function StorageDrawerCardContent({
     <DrawerContent className="backdrop-blur-md bg-white/50 max-h-[600px] h-fit w-full flex flex-col justify-start items-start">
       <DrawerHeader className="w-full">
         <div className="w-full flex flex-row justify-between h-fit">
-          <DrawerTitle>
+          <DrawerTitle asChild>
             <div className="text-sky-900 text-left text-xl">
               {storageGroup?.name ?? ""}
             </div>
@@ -234,8 +235,8 @@ function StorageCardView({
           commodity?.name ?? ""
         }</p>
         <div className="flex flex-row gap-1.5 font-semibold text-black text-[10px]">
-          <LabelChip label={commodity.category} />
-          <LabelChip label={commodity.condition} />
+          <LabelChip label={commodity.categoryString} />
+          <LabelChip label={commodity.conditionString} />
         </div>
       </div>
     </DialogClose>
