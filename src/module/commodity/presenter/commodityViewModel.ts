@@ -33,10 +33,10 @@ export default class CommodityViewModel implements CommodityEntity {
     }
 
     get giveExpireDuration(): Duration {
-        return Duration.fromMillis(this.giveExpireSeconds * 1000);
+        return Duration.fromMillis(this.giveExpireSeconds * 1000).rescale();
     }
 
     get receiveExpireDuration(): Duration {
-        return Duration.fromMillis(this.receiveExpireSeconds * 1000);
+        return Duration.fromMillis(this.receiveExpireSeconds * 1000).rescale();
     }
 }
