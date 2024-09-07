@@ -148,14 +148,12 @@ function StorageDrawerCardContent({
         <div className="flex flex-col gap-2">
           {
             storages.filter(storage => storage.commodityId != undefined).length === 0 ? (
-              <div className="flex items-center justify-center">
                 <Image
                   alt="empty"
                   src="/images/empty.png"
-                  width={300}
+                  width={400}
                   height={300}
                 />
-              </div>
             ) :
               storages.filter(storage => storage.commodityId != undefined).map((storage) => (
                 <StorageCardView key={storage.commodityId + storage.createdTime.toISOString()} commodityId={storage.commodityId!} />
