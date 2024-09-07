@@ -79,7 +79,7 @@ export default function Page() {
                   <div className="flex flex-col gap-2">
                     {
                       storages.map((storage, index) => (
-                        <div className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1">
+                        <div key={index} className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1">
                           <p className="text-sky-700 text-left font-bold border-sky-900">{"NAME"}</p>
                           <div className="flex flex-row gap-1.5 font-semibold text-black text-[10px]">
                             <div className="rounded-full border px-2">{"#TAG"}</div>
