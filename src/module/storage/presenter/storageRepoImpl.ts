@@ -7,7 +7,7 @@ import StorageDto from "../application/storageDto";
 export default class StorageRepoImpl implements StorageRepo {
     async query(groupId?: number): Promise<StorageEntity[]> {
         const params: any = {};
-        if (groupId !== undefined) params.groupId = groupId;
+        if (groupId !== undefined) params.storageGroupId= groupId;
 
         const response = await axios.get(new URL("/api/storage/storage", BACKEND_URL).href, {
             params: params,
