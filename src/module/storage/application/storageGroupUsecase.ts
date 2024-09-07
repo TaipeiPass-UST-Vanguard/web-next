@@ -12,6 +12,10 @@ export default class StorageGroupUsecase {
         return this._repo.query();
     }
 
+    async getAllAvailableStorageGroup(): Promise<StorageGroupEntity[]> {
+        return (await this.getAllStorageGroup()).filter((group) => group.available > 0);
+    }
+
     async getStorageGroup(id: number): Promise<StorageGroupEntity> {
         return this._repo.get(id);
     }
