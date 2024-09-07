@@ -1,10 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import StorageGroupUsecase from "@/module/storage/application/storageGroupUsecase";
+import StorageUsecase from "@/module/storage/application/storageUsecase";
 import StorageGroupRepoImpl from "@/module/storage/presenter/storageGroupRepoImpl";
 import StorageGroupViewModel from "@/module/storage/presenter/storageGroupViewModel";
+import StorageRepoImpl from "@/module/storage/presenter/storageRepoImpl";
+import StorageViewModel from "@/module/storage/presenter/storageViewModel";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -12,43 +15,88 @@ const Map = dynamic(() => import("@/components/map"), {
   ssr: false
 });
 
-const usecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
+const storageGroupUsecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
+const storageUsecase = new StorageUsecase(new StorageRepoImpl());
 
 export default function Page() {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [storageGroups, setStorageGroups] = useState<StorageGroupViewModel[]>([]);
+  const [storages, setStorages] = useState<StorageViewModel[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 
-  async function fetchAll() {
-    const entities = await usecase.getAllStorageGroup();
+  async function fetchAllStorageGroup() {
+    const entities = await storageGroupUsecase.getAllStorageGroup();
     setStorageGroups(entities.map(entity => new StorageGroupViewModel(entity)));
   }
 
+  async function fetchAllStorage(groupId: number) {
+    const entities = await storageUsecase.getAllStorage(groupId);
+    setStorages(entities.map(entity => new StorageViewModel(entity)));
+  }
+
   useEffect(() => {
-    fetchAll().catch(console.error);
+    fetchAllStorageGroup().catch(console.error);
   }, []);
 
+  function handleLocationClicked(index: number) {
+    const groupId = storageGroups[index].id;
+    fetchAllStorage(groupId).catch(console.error);
+    setSelectedIndex(index);
+    setIsDrawerOpen(true);
+  }
 
   return (
     <div className="h-screen relative">
       <div className="absolute inset-0 z-0">
         <Map
           locations={storageGroups.map(group => [group.latitude, group.longitude])}
-          onClick={() => setIsDrawerOpen(true)}
+          onClick={handleLocationClicked}
         />
       </div>
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-            <DrawerDescription>This action cannot be undone.</DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
+        {
+          selectedIndex >= 0 &&
+          <DrawerContent className="backdrop-blur-3xl bg-white bg-opacity-90">
+            <DrawerHeader>
+              <DrawerTitle>
+                <div className="text-sky-900 text-left text-lg">
+                  {storageGroups[selectedIndex].name}
+                </div>
+              </DrawerTitle>
+              <DrawerDescription className="mt-5">
+                <div className="flex flex-col gap-5">
+                  <div className="flex flex-row gap-3">
+                    <div className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1">
+                      <p className="text-sky-700 text-left font-bold">交換物數量</p>
+                      <p className="text-green-500 text-left font-bold">{storageGroups[selectedIndex].available}</p>
+                    </div>
+                    <div className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1">
+                      <p className="text-sky-700 text-left font-bold">總櫃位數量</p>
+                      <p className="text-black text-left font-bold">{storageGroups[selectedIndex].total}</p>
+                    </div>
+                  </div>
+                  <hr className="text-slate-200" />
+                  <div className="flex flex-col gap-2">
+                    {
+                      storages.map((storage, index) => (
+                        <div className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1">
+                          <p className="text-sky-700 text-left font-bold border-sky-900">{"NAME"}</p>
+                          <div className="flex flex-row gap-1.5 font-semibold text-black text-[10px]">
+                            <div className="rounded-full border px-2">{"#TAG"}</div>
+                            <div className="rounded-full border px-2 ">{"#STATUS"}</div>
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </div>
+                  <div className="flex flex-row justify-end">
+                    <Button className="rounded-full bg-sky-500 text-white font-bold">新增交換物</Button>
+                  </div>
+                </div>
+              </DrawerDescription>
+            </DrawerHeader>
+          </DrawerContent>
+        }
       </Drawer>
     </div>
   );

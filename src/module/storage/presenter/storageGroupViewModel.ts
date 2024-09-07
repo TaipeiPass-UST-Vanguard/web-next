@@ -5,6 +5,8 @@ export default class StorageGroupViewModel implements StorageGroupEntity {
     name: string;
     longitude: number;
     latitude: number;
+    available: number;
+    total: number;
     createdTime: Date;
     updatedTime: Date;
 
@@ -13,6 +15,8 @@ export default class StorageGroupViewModel implements StorageGroupEntity {
         this.name = entity.name;
         this.longitude = entity.longitude;
         this.latitude = entity.latitude;
+        this.available = entity.available;
+        this.total = entity.total;
         this.createdTime = entity.createdTime;
         this.updatedTime = entity.updatedTime;
     }
