@@ -20,6 +20,13 @@ export default class CommodityUsecase {
         return this._repo.create(params);
     }
 
+    /**
+     * @param status Use `CommodityStatus` in "@/module/commodity/domain/commodityStatus"
+     */
+    async updateCommodityStatus(id: number, status: string): Promise<CommodityEntity> {
+        return this._repo.update(id, { status: status });
+    }
+
     async deleteCommodity(id: number): Promise<void> {
         await this._repo.delete(id);
     }
