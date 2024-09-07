@@ -34,8 +34,9 @@ export default function ImageUpload({
   }
 
   useEffect(() => {
+    if (images.length === 0 || isUploading.length > 0) return;
     onChange?.(images.map(image => image.id));
-  }, [isUploading]);
+  }, [isUploading, images]);
 
   return images.length === 0
     ? (
