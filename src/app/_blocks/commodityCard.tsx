@@ -1,11 +1,11 @@
 import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel";
 import {
-    Drawer,
-    DrawerContent,
-    DrawerDescription,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerFooter,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerFooter,
 } from "@/components/ui/drawer";
 import StatusWidget from "@/components/statusWidget";
 import { LabelChip } from "@/components/chip";
@@ -20,30 +20,29 @@ import CommodityUsecase from "@/module/commodity/application/commodityUsecase";
 import CommodityRepoImpl from "@/module/commodity/presenter/commodityRepoImpl";
 import Timer from "@/components/timer";
 import CommodityStatus from "@/module/commodity/domain/commodityStatus";
-import { set } from "date-fns";
 import RatingDrawer from "@/components/ratingPopDialog";
+import ImageCarousel from "@/components/imageCarousel";
+import { BACKEND_URL } from "@/config/config";
 
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 
 export function CommodityCard(
-    {
-        commodityViewModel,
-        lock = false
-    }: {
-        lock?: boolean;
-        commodityViewModel: CommodityViewModel;
-    }
+  {
+    commodityViewModel,
+  }: {
+    commodityViewModel: CommodityViewModel;
+  }
 ) {
-    const [open, setOpen] = useState(true);
-    const [showButton, setShowButton] = useState(false); // 控制按鈕顯示的狀態
-    const [showRating, setShowRating] = useState(false);
-    const route = useRouter();
-    const pathName = usePathname() ?? "";
-    const user = useContext(UserContext);
+  const [open, setOpen] = useState(true);
+  const [showButton, setShowButton] = useState(false); // 控制按鈕顯示的狀態
+  const [showRating, setShowRating] = useState(false);
+  const route = useRouter();
+  const pathName = usePathname() ?? "";
+  const user = useContext(UserContext);
 
-    useEffect(() => {
-        setOpen(true);
-    }, [commodityViewModel.receiverId, commodityViewModel.id]);
+  useEffect(() => {
+    setOpen(true);
+  }, [commodityViewModel.receiverId, commodityViewModel.id]);
 
     return (
         <>
@@ -193,15 +192,18 @@ export function CommodityCard(
                 </DrawerContent>
             </Drawer>
             {showButton && (
-                <Button
-                className="fixed flex flex-col h-fit p-1 w-fit bottom-4 right-4"
-                    onClick={() => {
-                        setOpen(true);
-                        setShowButton(false); // 隱藏按鈕
-                    }}
-                >
-                    <Timer className="text-xl" initialDuration={commodityViewModel.receiveExpireDuration} />
-                </Button>
+                <div className="fixed bottom-4 right-4">
+                    <Button
+                        onClick={() => {
+                            setOpen(true);
+                            setShowButton(false); // 隱藏按鈕
+                        }}
+                    >
+                        <InfoBlocks label="取貨時間" value={
+                            <Timer className="text-xl" initialDuration={commodityViewModel.receiveExpireDuration} />
+                        } />
+                    </Button>
+                </div>
             )}
             {showRating && (
                 <RatingDrawer commodityID={commodityViewModel.id} />

@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import { NavBar } from "./_blocks/navBar";
 import { useSearchParams} from 'next/navigation'
 import CommodityUsecase from "@/module/commodity/application/commodityUsecase";
@@ -9,14 +9,22 @@ import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel"
 import { CommodityCard } from "./_blocks/commodityCard";
 import { UserContext } from "./_context/userContext";
 import { PositionContext } from "./_context/positionContext";
-import { CreateCommodityForm } from "./_blocks/CreateCommodityForm";
+import { CreateCommodityForm } from "./_blocks/createCommodityForm";
 
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 const Map = dynamic(() => import("@/components/map"), {
   ssr: false
 });
 
-export default function Page() {
+export default function HomePage() {
+  return (
+    <Suspense>
+      <_HomePage />
+    </Suspense>
+  );
+}
+
+function _HomePage() {
   const [commodityViewModel, setCommodityViewModel] = useState<CommodityViewModel | undefined>(undefined); 
 
   const searchParams = useSearchParams();

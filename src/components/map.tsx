@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import { Button } from "./ui/button";
-import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer";
+import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer";
 import { InfoBlocks } from "@/app/_blocks/InfoBlocks";
 import { Separator } from "./ui/separator";
 import StorageGroupViewModel from "@/module/storage/presenter/storageGroupViewModel";
@@ -140,26 +140,26 @@ function StorageDrawerCardContent({
             </div>
           </DrawerTitle>
           <DrawerClose asChild>
-          <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={
-            () => {
-              let params = new URLSearchParams(
-                {
-                  commodityId: "-1",
-                  defaultGroupId: String(storageGroup.id)
-                }
-              );
-              route.push(
-                pathName+ "?" + params.toString()
-              )
-            }
-          }>
-            <div className="flex flex-row justify-center items-center space-x-2">
-              <LuPlus />
-              <span>新增物品</span>
-            </div>
-          </Button>
+            <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={
+              () => {
+                const params = new URLSearchParams(
+                  {
+                    commodityId: "-1",
+                    defaultGroupId: String(storageGroup.id)
+                  }
+                );
+                route.push(
+                  pathName + "?" + params.toString()
+                )
+              }
+            }>
+              <div className="flex flex-row justify-center items-center space-x-2">
+                <LuPlus />
+                <span>新增物品</span>
+              </div>
+            </Button>
           </DrawerClose>
-          
+
         </div>
       </DrawerHeader>
       <div className="w-full flex flex-col p-4 space-y-4 h-[400px] overflow-scroll">
@@ -168,14 +168,14 @@ function StorageDrawerCardContent({
           <InfoBlocks label="總櫃位數量" value={String(storageGroup?.total ?? "")} />
         </div>
         <Separator />
-        
+
         <div className="flex flex-col gap-2">
           {
             storages.filter(storage => storage.commodityId != undefined).length === 0 ? (
               <div className="flex items-center justify-center">
                 <Image
                   alt="empty"
-                  src="/images/empty.png"
+                  src="/svgs/empty.svg"
                   width={300}
                   height={300}
                 />
@@ -205,7 +205,7 @@ function StorageCardView({
   useEffect(() => {
     startLoadingCommodity(async () => {
       try {
-        let commodity = await commodityUsecase.getCommodityById(commodityId)
+        const commodity = await commodityUsecase.getCommodityById(commodityId)
         setCommodity(new CommodityViewModel(commodity));
       } catch (error) {
         console.error(error);
@@ -220,7 +220,7 @@ function StorageCardView({
     <DialogClose>
       <div className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1" onClick={
         () => {
-          let params = new URLSearchParams(
+          const params = new URLSearchParams(
             {
               commodityId: String(commodityId)
             }
