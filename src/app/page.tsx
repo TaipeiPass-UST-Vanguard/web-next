@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -25,15 +23,7 @@ export default function Page() {
   } as UserEntity;
 
   // return (
-    // <div className="w-full h-screen relative">
-    //   {/* NavBar section with higher z-index */}
-    //   <div className="absolute top-10 h-10 w-full z-10">
-    //     <NavBar user={fakeUser} />
-    //   </div>
-    //   {/* Map section */}
-    //   <div className="absolute h-screen top-0 z-0 bg-blue-500">
-    //     <Map posix={[25.021589159405476, 121.53505492217596]} />
-    //   </div>
+    
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [storageGroups, setStorageGroups] = useState<StorageGroupViewModel[]>([]);
 
@@ -46,14 +36,17 @@ export default function Page() {
     fetchAll().catch(console.error);
   }, []);
 
-
   return (
     <div className="h-screen relative">
+       <div className="absolute top-10 h-10 w-full z-10 p-4">
+        <NavBar user={fakeUser} />
+      </div>
       <div className="absolute inset-0 z-0">
         <Map
           locations={storageGroups.map(group => [group.latitude, group.longitude])}
           onClick={() => setIsDrawerOpen(true)}
         />
+         {/* <Map /> */}
       </div>
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         <DrawerContent>
