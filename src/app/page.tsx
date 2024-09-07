@@ -47,8 +47,6 @@ export default function Page() {
     fetchAllStorageGroup().catch(console.error);
   }, []);
 
-<<<<<<< HEAD
-=======
   function handleLocationClicked(index: number) {
     const groupId = storageGroups[index].id;
     fetchAllStorage(groupId).catch(console.error);
@@ -56,7 +54,6 @@ export default function Page() {
     setIsDrawerOpen(true);
   }
 
->>>>>>> 4068b50c732be693c940503680b67521a491a643
   return (
     <div className="h-screen relative">
        <div className="absolute top-10 h-10 w-full z-10 p-4">
