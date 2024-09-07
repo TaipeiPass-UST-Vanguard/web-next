@@ -6,6 +6,8 @@ import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
+import { useHandleConnectionData } from "@/composables/useHandleConnectionData";
+import { useConnectionMessage } from "@/composables/useConnectionMessage";
 
 type MapProps = {
   locations?: LatLngTuple[];
@@ -21,24 +23,30 @@ export default function Map({
   const [position, setPosition] = useState<LatLngTuple | null>(null);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        console.log(`Location: ${pos.coords.latitude}, ${pos.coords.longitude}`);
-        setPosition([pos.coords.latitude, pos.coords.longitude]);
-      },
-      (error) => {
-        console.error(`Error getting location: ${error.message}`);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
+    const handlePosition = (event: { data: string }) => {
+      try {
+        const result = JSON.parse(event.data);
+        console.log(result);
+        if (result.name === 'location') {
+          setPosition([result.data.latitude, result.data.longitude]);
+        }
+      } catch (error) {
+        console.error('Error handling message:', error);
       }
-    );
+    };
+
+    useHandleConnectionData(handlePosition);
+    useConnectionMessage('location', null);
   }, []);
 
   if (position === null) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <div className="flex justify-center items-center h-screen">
+          <h1 className="flex flex-row">Loading ...</h1>
+        </div>
+      </>
+    )
   }
 
   return (
@@ -47,6 +55,7 @@ export default function Map({
         center={position}
         zoom={zoom}
         scrollWheelZoom={false}
+        zoomControl={false}
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
