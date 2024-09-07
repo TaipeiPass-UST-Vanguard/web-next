@@ -4,6 +4,9 @@ export type CommodityQueryParams = {
     location?: [number, number];
     keyword?: string;
     storageGroupId?: number;
+    status?: string;
+    giverId?: string;
+    receiverId?: string;
 };
 
 export type CommodityCreateParams = {

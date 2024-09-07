@@ -9,6 +9,9 @@ export default class CommodityRepoImpl implements CommodityRepo {
         location,
         keyword,
         storageGroupId,
+        status,
+        giverId,
+        receiverId,
     }: CommodityQueryParams): Promise<CommodityEntity[]> {
         const params: any = {};
         if (location !== undefined) {
@@ -17,6 +20,9 @@ export default class CommodityRepoImpl implements CommodityRepo {
         }
         if (keyword !== undefined) params.keyword = keyword;
         if (storageGroupId !== undefined) params.storageGroupId = storageGroupId;
+        if (status !== undefined) params.status = status;
+        if (giverId !== undefined) params.giverId = giverId;
+        if (receiverId !== undefined) params.receiverId = receiverId;
 
         const response = await axios.get(new URL("/api/commodity/commodity", BACKEND_URL).href, {
             params: params,
