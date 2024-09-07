@@ -14,7 +14,7 @@ export type CommodityCreateParams = {
     condition: string;
     description: string;
     name: string;
-    userId: string;
+    giverId: string;
     storageGroupId: number;
     images: number[];
 };
