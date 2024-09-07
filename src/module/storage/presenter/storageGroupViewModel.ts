@@ -20,4 +20,8 @@ export default class StorageGroupViewModel implements StorageGroupEntity {
         this.createdTime = entity.createdTime;
         this.updatedTime = entity.updatedTime;
     }
+
+    get withCommodityNumber() : number {
+        return this.total-this.available;
+    }
 }
