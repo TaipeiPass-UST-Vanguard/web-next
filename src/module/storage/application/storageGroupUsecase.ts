@@ -11,4 +11,8 @@ export default class StorageGroupUsecase {
     async getAllStorageGroup(): Promise<StorageGroupEntity[]> {
         return this._repo.query();
     }
+
+    async getStorageGroup(id: number): Promise<StorageGroupEntity> {
+        return this._repo.get(id);
+    }
 }

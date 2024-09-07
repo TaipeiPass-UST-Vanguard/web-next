@@ -87,6 +87,8 @@ export default function Page() {
         />
         {/* <Map /> */}
       </div>
+
+      
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         {
           selectedIndex >= 0 &&
