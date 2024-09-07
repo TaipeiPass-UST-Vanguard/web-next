@@ -134,7 +134,6 @@ function StorageDrawerCardContent({
               <span>新增物品</span>
             </div>
             </Button>
-            
           </div>
           </DrawerHeader>
           <div className="w-full flex flex-col p-4 space-y-4 h-[400px] overflow-scroll">
