@@ -27,7 +27,9 @@ const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 export function CommodityCard(
     {
         commodityViewModel,
+        lock = false
     } : {
+        lock?: boolean;
         commodityViewModel: CommodityViewModel;
     }
 ){  

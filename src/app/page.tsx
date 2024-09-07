@@ -18,7 +18,9 @@ const Map = dynamic(() => import("@/components/map"), {
 });
 
 export default function Page() {
-  const [commodityViewModel, setCommodityViewModel] = useState<CommodityViewModel | undefined>(undefined);
+  const [commodityViewModel, setCommodityViewModel] = useState<CommodityViewModel | undefined>(undefined); 
+  const [currentCommodityViewModel, setCurrentCommodityViewModel] = useState<CommodityViewModel | undefined>(undefined); 
+
   const searchParams = useSearchParams();
   
   const [position, setPosition] = useState<LatLngTuple | null>(
@@ -61,6 +63,7 @@ export default function Page() {
         const order = await commodityUsecase.getAllCommodity({receiverId: user.id});
         if (order && order.length > 0) {
           setCommodityViewModel(new CommodityViewModel(order[0]));
+          // setCurrentCommodityViewModel(new CommodityViewModel(order[0]));
           // route.push(pathName + `?commodityId=${order[0].id}`);
         }
       }
@@ -87,6 +90,9 @@ export default function Page() {
       </div>
       {
         commodityViewModel && <CommodityCard commodityViewModel={commodityViewModel}/>
+      }
+      {
+        // commodityViewModel && <CommodityCard commodityViewModel={currentCommodityViewModel}/>
       }
     </div>
   );
