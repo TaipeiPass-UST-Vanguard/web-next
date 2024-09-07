@@ -1,8 +1,5 @@
 import { Duration } from "luxon";
 import CommodityEntity from "../domain/commodityEntity";
-import CommodityStatus from "../domain/commodityStatus";
-import CommodityCategory from "../domain/commodityCategory";
-import CommodityCondition from "../domain/commodityCondition";
 import { format } from "date-fns";
 import { commodityCategoryString, commodityConditionString, commodityStatusString } from "./commodityStrings";
 

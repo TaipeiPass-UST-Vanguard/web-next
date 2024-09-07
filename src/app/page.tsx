@@ -9,7 +9,7 @@ import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel"
 import { CommodityCard } from "./_blocks/commodityCard";
 import { UserContext } from "./_context/userContext";
 import { PositionContext } from "./_context/positionContext";
-import { CreateCommodityForm } from "./_blocks/CreateCommodityForm";
+import { CreateCommodityForm } from "./_blocks/createCommodityForm";
 
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 const Map = dynamic(() => import("@/components/map"), {
