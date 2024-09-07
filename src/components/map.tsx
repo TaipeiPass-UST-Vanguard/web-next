@@ -125,6 +125,8 @@ function StorageDrawerCardContent({
     }
     setStorages(pendingStorages);
   }
+  const route = useRouter();
+  const pathName = usePathname()
   useEffect(() => {
     fetchAllStorage(storageGroup.id).catch(console.error);
   }, [storageGroup.id]);
@@ -137,7 +139,19 @@ function StorageDrawerCardContent({
               {storageGroup?.name ?? ""}
             </div>
           </DrawerTitle>
-          <Button className="rounded-full bg-sky-500 text-white font-bold">
+          <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={
+            () => {
+              let params = new URLSearchParams(
+                {
+                  groupId: "-1",
+                  defaultGroupId: String(storageGroup.id)
+                }
+              );
+              route.push(
+                pathName+ "?" + params.toString()
+              )
+            }
+          }>
             <div className="flex flex-row justify-center items-center space-x-2">
               <LuPlus />
               <span>新增物品</span>
@@ -154,13 +168,15 @@ function StorageDrawerCardContent({
         
         <div className="flex flex-col gap-2">
           {
-            storages.length === 0 ? (
-              <Image
-                alt="empty"
-                src="/images/empty.png"
-                width={400}
-                height={300}
-              />
+            storages.filter(storage => storage.commodityId != undefined).length === 0 ? (
+              <div className="flex items-center justify-center">
+                <Image
+                  alt="empty"
+                  src="/images/empty.png"
+                  width={300}
+                  height={300}
+                />
+              </div>
             ) :
               storages.map((storage) => (
                 <StorageCardView key={storage.commodityId + storage.createdTime.toISOString()} commodityId={storage.commodityId!} />

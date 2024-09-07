@@ -9,6 +9,7 @@ import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel"
 import { CommodityCard } from "./_blocks/commodityCard";
 import { UserContext } from "./_context/userContext";
 import { PositionContext } from "./_context/positionContext";
+import { CreateCommodityForm } from "./_blocks/CreateCommodityForm";
 
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 const Map = dynamic(() => import("@/components/map"), {
@@ -22,6 +23,9 @@ export default function Page() {
 
   const user = useContext(UserContext);
   const position = useContext(PositionContext);
+  const commodityId = searchParams.get('commodityId');
+  
+
 
   useEffect(() => {
     const fetchCommodity = async (commodityId: string) => {
@@ -44,8 +48,7 @@ export default function Page() {
         }
       }
     }
-    const commodityId = searchParams.get('commodityId');
-    if (commodityId) {
+    if (commodityId && commodityId !== '-1') {
       fetchCommodity(commodityId);
     }
     else {
@@ -68,7 +71,7 @@ export default function Page() {
         commodityViewModel && <CommodityCard commodityViewModel={commodityViewModel}/>
       }
       {
-        // commodityViewModel && <CommodityCard commodityViewModel={currentCommodityViewModel}/>
+        commodityId && commodityId === '-1' && <CreateCommodityForm/>
       }
     </div>
   );
