@@ -44,6 +44,13 @@ const StatusWidget = ({ status }:{status:string}) => {
           <span className="text-black font-bold text-sm">待清除</span>
         </div>
       );
+    case CommodityStatus.finished:
+      return(
+        <div className={`inline-flex items-center py-0.5 px-3 rounded-full bg-gray-100`}>
+          <div className={`w-2.5 h-2.5 rounded-full mr-2 bg-green-500`}></div>
+          <span className="text-black font-bold text-sm">已完成</span>
+        </div>
+      );
     default:
       return(
         <div className={`inline-flex items-center py-0.5 px-3 rounded-full 'bg-gray-100'`}>

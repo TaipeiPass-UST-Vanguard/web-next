@@ -5,7 +5,7 @@ import { NavBar } from "./_blocks/NavBar";
 import { useHandleConnectionData } from "@/composables/useHandleConnectionData";
 import { useConnectionMessage } from "@/composables/useConnectionMessage";
 import { LatLngTuple } from "leaflet";
-import { useSearchParams} from 'next/navigation'
+import { useRouter, useSearchParams} from 'next/navigation'
 import CommodityUsecase from "@/module/commodity/application/commodityUsecase";
 import CommodityRepoImpl from "@/module/commodity/presenter/commodityRepoImpl";
 import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel";
@@ -39,10 +39,15 @@ export default function Page() {
 
   useHandleConnectionData(handlePosition);
   useConnectionMessage('location', null);
+  const user = useContext(UserContext);
+  const pathName = useSearchParams();
+  const route = useRouter();
+  
+
 
   useEffect(() => {
-    const fetchCommodity = async () => {
-      const commodityId = searchParams.get('commodityId');
+    const fetchCommodity = async (commodityId: string) => {
+      // const commodityId = searchParams.get('commodityId');
       if (commodityId) {
         const commodity = await commodityUsecase.getCommodityById(Number.parseInt(commodityId));
         setCommodityViewModel(new CommodityViewModel(commodity));
@@ -51,15 +56,24 @@ export default function Page() {
         setCommodityViewModel(undefined);
       }
     };
-    commodityUsecase.getAllCommodity(
-      {
-        // receiverId: searchParams.get('receiverId'),
+    const fetchUserCurrentOrder = async () => {
+      if (user) {
+        const order = await commodityUsecase.getAllCommodity({receiverId: user.id});
+        if (order && order.length > 0) {
+          setCommodityViewModel(new CommodityViewModel(order[0]));
+          // route.push(pathName + `?commodityId=${order[0].id}`);
+        }
       }
-    )
-    fetchCommodity();
+    }
+    const commodityId = searchParams.get('commodityId');
+    if (commodityId) {
+      fetchCommodity(commodityId);
+    }
+    else {
+      fetchUserCurrentOrder();
+    }
   }, [searchParams]);
 
-  const user = useContext(UserContext);
 
   return (
     <div className="h-screen relative">

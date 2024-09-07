@@ -43,10 +43,12 @@ export default class CommodityViewModel implements CommodityEntity {
     }
 
     get giveExpireDuration(): Duration {
+        
         return Duration.fromMillis(this.giveExpireSeconds * 1000).rescale();
     }
 
     get receiveExpireDuration(): Duration {
+        console.log(this.receiveExpireSeconds, Duration.fromMillis(this.receiveExpireSeconds * 1000).rescale());
         return Duration.fromMillis(this.receiveExpireSeconds * 1000).rescale();
     }
 
@@ -64,6 +66,8 @@ export default class CommodityViewModel implements CommodityEntity {
                 return "等待取貨";
             case CommodityStatus.expired:
                 return "待清除";
+            case CommodityStatus.finished:
+                return "已完成";
             default:
                 return "UNKNOWN";
         }

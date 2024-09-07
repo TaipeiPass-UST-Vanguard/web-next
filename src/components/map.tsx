@@ -146,6 +146,7 @@ function StorageDrawerCardContent({
           <InfoBlocks label="總櫃位數量" value={String(storageGroup?.total ?? "")} />
         </div>
         <Separator />
+        
         <div className="flex flex-col gap-2">
           {
             storages.filter(storage => storage.commodityId != undefined).length === 0 ? (
@@ -205,7 +206,7 @@ function StorageCardView({
             route.push(
               pathName+ "?" + params.toString()
             )
-            // console.log("click")
+            console.log(pathName+ "?" + params.toString())
           }
         }>
           <div className="flex flex-row justify-start items-center">

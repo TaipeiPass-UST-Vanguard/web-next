@@ -5,4 +5,5 @@ export default abstract class CommodityStatus {
     static readonly pending = "pending";
     static readonly receiving = "receiving";
     static readonly expired = "expired";
+    static readonly finished = "finished";
 }
