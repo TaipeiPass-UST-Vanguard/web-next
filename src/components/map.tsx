@@ -7,7 +7,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import { Button } from "./ui/button";
-import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer";
+import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "./ui/drawer";
 import { InfoBlocks } from "@/app/_blocks/InfoBlocks";
 import { Separator } from "./ui/separator";
 import StorageGroupViewModel from "@/module/storage/presenter/storageGroupViewModel";
@@ -139,11 +139,12 @@ function StorageDrawerCardContent({
               {storageGroup?.name ?? ""}
             </div>
           </DrawerTitle>
+          <DrawerClose asChild>
           <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={
             () => {
               let params = new URLSearchParams(
                 {
-                  groupId: "-1",
+                  commodityId: "-1",
                   defaultGroupId: String(storageGroup.id)
                 }
               );
@@ -157,6 +158,8 @@ function StorageDrawerCardContent({
               <span>新增物品</span>
             </div>
           </Button>
+          </DrawerClose>
+          
         </div>
       </DrawerHeader>
       <div className="w-full flex flex-col p-4 space-y-4 h-[400px] overflow-scroll">

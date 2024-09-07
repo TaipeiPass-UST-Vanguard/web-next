@@ -71,7 +71,7 @@ export default function Page() {
         commodityViewModel && <CommodityCard commodityViewModel={commodityViewModel}/>
       }
       {
-        commodityId && commodityId === '-1' && <CreateCommodityForm/>
+        commodityId === '-1' && <CreateCommodityForm/>
       }
     </div>
   );
