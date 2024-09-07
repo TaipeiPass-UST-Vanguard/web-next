@@ -1,7 +1,15 @@
-import Image from "next/image";
+import dynamic from "next/dynamic";
 
-export default function HomePage() {
+const Map = dynamic(() => import("@/components/Map"), {
+  ssr: false
+});
+
+export default function Page() {
   return (
-    <div>Hello</div>
+    <>
+      <div className="h-screen">
+        <Map posix={[25.021589159405476, 121.53505492217596]}/>
+      </div>
+    </>
   );
 }
