@@ -6,12 +6,13 @@ function Star({ x }: { x: number }) {
   const percentage = Math.min(1, Math.max(0, x)) * 100; // Convert x (0 to 1) to percentage
 
   return (
-    <div className="relative inline-block text-lg w-6 h-6"> {/* Ensure consistent height and size */}
+    <div className="relative inline-block text-lg w-12 h-12"> {/* Ensure consistent height and size */}
       {/* Full grey star as background */}
-      <FaStar className="text-gray-200 relative" style={{ zIndex: 1 }} />
+      <FaStar size={50} className="text-gray-200 relative" style={{ zIndex: 1 }} />
 
       {/* Partially yellow star on top */}
       <FaStar
+        size={50}
         className="text-yellow-500 absolute top-0 left-0"
         style={{
           clipPath: `inset(0 ${100 - percentage}% 0 0)`,
