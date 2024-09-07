@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import { NavBar } from "./_blocks/NavBar";
 import { useHandleConnectionData } from "@/composables/useHandleConnectionData";
 import { useConnectionMessage } from "@/composables/useConnectionMessage";
@@ -51,18 +51,20 @@ export default function Page() {
         setCommodityViewModel(undefined);
       }
     };
+    commodityUsecase.getAllCommodity(
+      {
+        // receiverId: searchParams.get('receiverId'),
+      }
+    )
     fetchCommodity();
   }, [searchParams]);
+
+  const user = useContext(UserContext);
 
   return (
     <div className="h-screen relative">
       <div className="absolute top-20 h-fit w-full z-10 p-4">
-        <UserContext.Consumer>
-          {
-            (value) => <NavBar user={value} />
-          }
-
-        </UserContext.Consumer>
+        <NavBar user={user} />
       </div>
       <div className="absolute inset-0 z-0">
         <Map
