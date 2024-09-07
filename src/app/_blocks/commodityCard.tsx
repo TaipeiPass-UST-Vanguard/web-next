@@ -125,68 +125,68 @@ export function CommodityCard(
                             </Button>
                         ) : (
                             <>
-                            {commodityViewModel.status === "giving" && (
-                                <Button className="rounded-full bg-rose-500 text-white font-bold" onClick={() => {
-                                    setOpen(false);
-                                    commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
-                                        receiverId: "",
-                                        status: "giveExpired",
-                                    });
-                                }}>
-                                    <div className="flex flex-row justify-center items-center space-x-2">
-                                        <LuX />
-                                        <span>放棄置物</span>
-                                    </div>
-                                </Button>
-                            )}
-                            {commodityViewModel.status === "receiving" && (
-                                <Button className="rounded-full bg-rose-500 text-white font-bold" onClick={() => {
-                                    setOpen(false);
-                                    commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
-                                        receiverId: "",
-                                        status: "pending",
-                                    });
-                                }}>
-                                    <div className="flex flex-row justify-center items-center space-x-2">
-                                        <LuX />
-                                        <span>放棄取物</span>
-                                    </div>
-                                </Button>
-                            )}
-                            {commodityViewModel.status === "giving" && (
-                                <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={() => {
-                                    setOpen(false);
-                                    commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
-                                        receiverId: "",
-                                        status: CommodityStatus.finished,
-                                    });
-                                    // setShowRating(true);
-                                    // route.push(`/commodity/${commodityViewModel.id}`)
-                                }}>
-                                    <div className="flex flex-row justify-center items-center space-x-2">
-                                        <LuCheck />
-                                        <span>完成置物</span>
-                                    </div>
-                                </Button>
-                            )}
-                            {commodityViewModel.status === "receiving" && (
-                                <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={() => {
-                                    setOpen(false);
-                                    commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
-                                        receiverId: "",
-                                        status: CommodityStatus.finished,
-                                    });
-                                    setShowRating(true);
-                                    // route.push(`/commodity/${commodityViewModel.id}`)
-                                }}>
-                                    <div className="flex flex-row justify-center items-center space-x-2">
-                                        <LuCheck />
-                                        <span>完成取物</span>
-                                    </div>
-                                </Button>
-                            )}
-                                
-                                
+                                {commodityViewModel.status === "giving" && (
+                                    <Button className="rounded-full bg-rose-500 text-white font-bold" onClick={() => {
+                                        setOpen(false);
+                                        commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                            receiverId: "",
+                                            status: "giveExpired",
+                                        });
+                                    }}>
+                                        <div className="flex flex-row justify-center items-center space-x-2">
+                                            <LuX />
+                                            <span>放棄置物</span>
+                                        </div>
+                                    </Button>
+                                )}
+                                {commodityViewModel.status === "receiving" && (
+                                    <Button className="rounded-full bg-rose-500 text-white font-bold" onClick={() => {
+                                        setOpen(false);
+                                        commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                            receiverId: "",
+                                            status: "pending",
+                                        });
+                                    }}>
+                                        <div className="flex flex-row justify-center items-center space-x-2">
+                                            <LuX />
+                                            <span>放棄取物</span>
+                                        </div>
+                                    </Button>
+                                )}
+                                {commodityViewModel.status === "giving" && (
+                                    <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={() => {
+                                        setOpen(false);
+                                        commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                            receiverId: "",
+                                            status: CommodityStatus.finished,
+                                        });
+                                        // setShowRating(true);
+                                        // route.push(`/commodity/${commodityViewModel.id}`)
+                                    }}>
+                                        <div className="flex flex-row justify-center items-center space-x-2">
+                                            <LuCheck />
+                                            <span>完成置物</span>
+                                        </div>
+                                    </Button>
+                                )}
+                                {commodityViewModel.status === "receiving" && (
+                                    <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={() => {
+                                        setOpen(false);
+                                        commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                            receiverId: "",
+                                            status: CommodityStatus.finished,
+                                        });
+                                        setShowRating(true);
+                                        // route.push(`/commodity/${commodityViewModel.id}`)
+                                    }}>
+                                        <div className="flex flex-row justify-center items-center space-x-2">
+                                            <LuCheck />
+                                            <span>完成取物</span>
+                                        </div>
+                                    </Button>
+                                )}
+
+
                             </>
                         )}
                     </DrawerFooter>
@@ -194,16 +194,14 @@ export function CommodityCard(
             </Drawer>
             {showButton && (
                 <div className="fixed bottom-4 right-4">
-                    <Button
-                        onClick={() => {
-                            setOpen(true);
-                            setShowButton(false); // 隱藏按鈕
-                        }}
-                    >
+                    <div className="rounded-lg border-4 cursor-pointer" onClick={() => {
+                        setOpen(true);
+                        setShowButton(false); // 隱藏按鈕
+                    }}>
                         <InfoBlocks label="取貨時間" value={
                             <Timer className="text-xl" initialDuration={commodityViewModel.receiveExpireDuration} />
                         } />
-                    </Button>
+                    </div>
                 </div>
             )}
             {showRating && (
