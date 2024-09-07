@@ -1,6 +1,7 @@
 export default interface CommodityEntity {
     id: number;
     userId: string;
+    receiverId: string;
     storageGroupId: number;
     name: string;
     description: string;
