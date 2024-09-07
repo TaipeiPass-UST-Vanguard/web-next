@@ -66,7 +66,7 @@ export function CommodityCard(
             <Button className="rounded-full bg-sky-500 text-white font-bold">
                 <div className="flex flex-row justify-center items-center space-x-2">
                 <LuPlus/> 
-                <span>新增物品</span>
+                <span>接收</span>
                 </div>
             </Button>
         </DrawerFooter>
