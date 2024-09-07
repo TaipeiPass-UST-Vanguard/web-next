@@ -14,11 +14,11 @@
  * <strong>重要提醒：</strong>建議都在 /views 呼叫此 hook，為了方便跟 useHandleConnectionData 管理。
  */
 export const useConnectionMessage = (name: string, data: any) => {
-    // @ts-expect-error
+    // @ts-expect-error Ignore
     if (typeof flutterObject !== 'undefined' && flutterObject) {
       const postInfo = JSON.stringify({ name, data });
   
-      // @ts-expect-error
+      // @ts-expect-error Ignore
       flutterObject.postMessage(postInfo);
     }
   };

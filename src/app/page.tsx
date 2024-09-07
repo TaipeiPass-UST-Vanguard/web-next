@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import { NavBar } from "./_blocks/navBar";
 import { useSearchParams} from 'next/navigation'
 import CommodityUsecase from "@/module/commodity/application/commodityUsecase";
@@ -16,7 +16,15 @@ const Map = dynamic(() => import("@/components/map"), {
   ssr: false
 });
 
-export default function Page() {
+export default function HomePage() {
+  return (
+    <Suspense>
+      <_HomePage />
+    </Suspense>
+  );
+}
+
+function _HomePage() {
   const [commodityViewModel, setCommodityViewModel] = useState<CommodityViewModel | undefined>(undefined); 
 
   const searchParams = useSearchParams();

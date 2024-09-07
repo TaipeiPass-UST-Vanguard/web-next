@@ -1,17 +1,12 @@
 "use client";
 
-import StorageGroupUsecase from "@/module/storage/application/storageGroupUsecase";
-import StorageGroupRepoImpl from "@/module/storage/presenter/storageGroupRepoImpl";
-import { useContext, useEffect, useState, useTransition } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Drawer, DrawerContent } from "./ui/drawer";
 import DraggableStars from "./draggableStar";
 import { Button } from "./ui/button";
-import RewardEntity from "@/module/reward/domain/rewardEntity";
 import RewardUsecase from "@/module/reward/application/rewardUsecase";
 import RewardRepoImpl from "@/module/reward/presenter/rewardRepoImpl";
-import RewardViewModel from "@/module/reward/presenter/rewardViewModel";
 import { UserContext } from "@/app/_context/userContext";
-const usecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
 const rewardUsecase = new RewardUsecase(new RewardRepoImpl());
 async function submit({ commodityID, userID, reward }: { commodityID: number, userID: string, reward: number }) {
     await rewardUsecase.createReward({ commodityId: commodityID, userId: userID, reward: reward });

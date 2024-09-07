@@ -1,5 +1,4 @@
 import Stars from "./star";
-import { DrawerContent } from "./ui/drawer";
 
 export default function RatingWidget({ rating }: { rating: number }) {
   return (
