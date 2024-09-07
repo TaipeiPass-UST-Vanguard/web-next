@@ -72,8 +72,8 @@ function CommoditySearchCard(
         <h2 className="text-lg font-bold">{commodity.name}</h2>
         <div className="w-full flex flex-row justify-between space-x-2 mt-2">
           <div className="flex flex-row justify-start items-center space-x-2">
-            <LabelChip label={commodity.category} />
-            <LabelChip label={commodity.condition} />
+            <LabelChip label={commodity.categoryString} />
+            <LabelChip label={commodity.conditionString} />
           </div>
           <div className="text-blue-500 flex items-center">
               <FaMapMarkerAlt />

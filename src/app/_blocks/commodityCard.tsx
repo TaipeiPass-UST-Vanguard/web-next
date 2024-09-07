@@ -193,18 +193,15 @@ export function CommodityCard(
                 </DrawerContent>
             </Drawer>
             {showButton && (
-                <div className="fixed bottom-4 right-4">
-                    <Button
-                        onClick={() => {
-                            setOpen(true);
-                            setShowButton(false); // 隱藏按鈕
-                        }}
-                    >
-                        <InfoBlocks label="取貨時間" value={
-                            <Timer className="text-xl" initialDuration={commodityViewModel.receiveExpireDuration} />
-                        } />
-                    </Button>
-                </div>
+                <Button
+                className="fixed flex flex-col h-fit p-1 w-fit bottom-4 right-4"
+                    onClick={() => {
+                        setOpen(true);
+                        setShowButton(false); // 隱藏按鈕
+                    }}
+                >
+                    <Timer className="text-xl" initialDuration={commodityViewModel.receiveExpireDuration} />
+                </Button>
             )}
             {showRating && (
                 <RatingDrawer commodityID={commodityViewModel.id} />
