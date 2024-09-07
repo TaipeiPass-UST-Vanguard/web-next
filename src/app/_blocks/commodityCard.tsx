@@ -20,6 +20,8 @@ import CommodityUsecase from "@/module/commodity/application/commodityUsecase";
 import CommodityRepoImpl from "@/module/commodity/presenter/commodityRepoImpl";
 import Timer from "@/components/timer";
 import CommodityStatus from "@/module/commodity/domain/commodityStatus";
+import { set } from "date-fns";
+import RatingDrawer from "@/components/ratingPopDialog";
 
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 
@@ -34,6 +36,7 @@ export function CommodityCard(
 ) {
     const [open, setOpen] = useState(true);
     const [showButton, setShowButton] = useState(false); // 控制按鈕顯示的狀態
+    const [showRating, setShowRating] = useState(false);
     const route = useRouter();
     const pathName = usePathname() ?? "";
     const user = useContext(UserContext);
@@ -127,6 +130,7 @@ export function CommodityCard(
                                         receiverId: "",
                                         status: CommodityStatus.finished,
                                     });
+                                    setShowRating(true);
                                     // route.push(`/commodity/${commodityViewModel.id}`)
                                 }}>
                                     <div className="flex flex-row justify-center items-center space-x-2">
@@ -152,6 +156,9 @@ export function CommodityCard(
                         } />
                     </Button>
                 </div>
+            )}
+            {showRating && (
+                <RatingDrawer items={[commodityViewModel]} />
             )}
         </>
     );
