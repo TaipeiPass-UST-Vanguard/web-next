@@ -18,6 +18,7 @@ async function submit({ commodityID, userID, reward }: { commodityID: number, us
 }
 
 const RatingDrawer = ({ commodityID }: { commodityID: number }) => {
+    
     const [currentRating, setCurrentRating] = useState(1); // State to hold the rating
 
     const handleRatingChange = (newRating: number) => {
