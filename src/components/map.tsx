@@ -26,7 +26,7 @@ import Image from "next/image";
 import { LabelChip } from "./chip";
 import { usePathname, useRouter } from "next/navigation";
 import { DialogClose } from "@radix-ui/react-dialog";
-import StatusWidget from "./statusWidget";
+import CommodityStatus from "@/module/commodity/domain/commodityStatus";
 
 const storageGroupUsecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
 const storageUsecase = new StorageUsecase(new StorageRepoImpl());
@@ -63,7 +63,6 @@ export default function Map({
     setGroupDialogOpen(true)
     setSelectedStorageGroups(storageGroup)
   }
-
 
   return position === null || storageGroups.length === 0 ? (
     <div className="w-full h-full flex flex-col justify-center items-center bg-white">
@@ -118,7 +117,13 @@ function StorageDrawerCardContent({
   // const storageWithCommodity = storages.filter(storage => !storage.commodityId);
   async function fetchAllStorage(groupId: number) {
     const entities = await storageUsecase.getAllStorage(groupId);
-    setStorages(entities.map(entity => new StorageViewModel(entity)));
+    const pendingStorages: StorageViewModel[] = [];
+    for (const entity of entities) {
+      if (!entity.commodityId) continue;
+      const commodity = await commodityUsecase.getCommodityById(entity.commodityId);
+      if (commodity.status === CommodityStatus.pending) pendingStorages.push(new StorageViewModel(entity));
+    }
+    setStorages(pendingStorages);
   }
   useEffect(() => {
     fetchAllStorage(storageGroup.id).catch(console.error);
@@ -149,15 +154,15 @@ function StorageDrawerCardContent({
         
         <div className="flex flex-col gap-2">
           {
-            storages.filter(storage => storage.commodityId != undefined).length === 0 ? (
-                <Image
-                  alt="empty"
-                  src="/images/empty.png"
-                  width={400}
-                  height={300}
-                />
+            storages.length === 0 ? (
+              <Image
+                alt="empty"
+                src="/images/empty.png"
+                width={400}
+                height={300}
+              />
             ) :
-              storages.filter(storage => storage.commodityId != undefined).map((storage) => (
+              storages.map((storage) => (
                 <StorageCardView key={storage.commodityId + storage.createdTime.toISOString()} commodityId={storage.commodityId!} />
               ))
           }
@@ -194,30 +199,26 @@ function StorageCardView({
     <Skeleton className="w-full h-16 rounded-md" />
   ) : (
     <DialogClose>
-      <div className="w-full rounded-md bg-white flex flex-col justify-center px-2 gap-1 py-1" onClick={
-          () => {
-            let params = new URLSearchParams(
-              {
-                commodityId: String(commodityId)
-              }
-            );
-            route.push(
-              pathName+ "?" + params.toString()
-            )
-            console.log(pathName+ "?" + params.toString())
-          }
-        }>
-          <div className="flex flex-row justify-start items-center">
-            <StatusWidget status={commodity.status}/>
-          </div>
-          <p className="text-sky-700 text-left font-bold border-sky-900">{
-            commodity?.name ?? ""
-          }</p>
-          <div className="flex flex-row gap-1.5 font-semibold text-black text-[10px]">
-            <LabelChip label={commodity.category}/>
-            <LabelChip label={commodity.condition}/>
-          </div>
+      <div className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1" onClick={
+        () => {
+          let params = new URLSearchParams(
+            {
+              commodityId: String(commodityId)
+            }
+          );
+          route.push(
+            pathName + "?" + params.toString()
+          )
+        }
+      }>
+        <p className="text-sky-700 text-left font-bold border-sky-900">{
+          commodity?.name ?? ""
+        }</p>
+        <div className="flex flex-row gap-1.5 font-semibold text-black text-[10px]">
+          <LabelChip label={commodity.category} />
+          <LabelChip label={commodity.condition} />
         </div>
+      </div>
     </DialogClose>
   )
 }
