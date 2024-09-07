@@ -45,6 +45,14 @@ export default function Page() {
           setCommodityViewModel(new CommodityViewModel(order[0]));
           // setCurrentCommodityViewModel(new CommodityViewModel(order[0]));
           // route.push(pathName + `?commodityId=${order[0].id}`);
+          return 
+        }
+        const order2 = await commodityUsecase.getAllCommodity({giverId: user.id});
+        if (order2 && order2.length > 0) {
+          setCommodityViewModel(new CommodityViewModel(order2[0]));
+          // setCurrentCommodityViewModel(new CommodityViewModel(order2[0]));
+          // route.push(pathName + `?commodityId=${order2[0].id}`);
+          return 
         }
       }
     }

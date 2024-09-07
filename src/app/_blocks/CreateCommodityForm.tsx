@@ -46,10 +46,11 @@ export function CreateCommodityForm(){
         defaultValues: {
             name: "",
             description: "",
-            userId: user?.id ?? 0,
+            giverId: user?.id ?? 0,
             category: undefined,
             storageGroupId: Number.parseInt(params.get("defaultGroupId") ?? "") ?? undefined,
             condition: "",
+            images: [],
         }
     })
 
@@ -70,6 +71,9 @@ export function CreateCommodityForm(){
         const res = await commodityUsecase.createCommodity({
             ...data,
         });
+        console.log(res)
+        setOpen(false)
+        route.push(pathName + `?commodityId=${res.id}`)
     }
 
     return <Drawer open={open} onOpenChange={(value) => {

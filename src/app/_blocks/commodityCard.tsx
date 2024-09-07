@@ -69,8 +69,8 @@ export function CommodityCard(
                             {commodityViewModel.description}
                         </DrawerDescription>
                         <div className="flex flex-row gap-1.5 font-semibold text-black text-[10px]">
-                            <LabelChip label={commodityViewModel.category} />
-                            <LabelChip label={commodityViewModel.condition} />
+                            <LabelChip label={commodityViewModel.categoryString} />
+                            <LabelChip label={commodityViewModel.conditionString} />
                         </div>
                     </DrawerHeader>
                     <div className="w-full flex flex-row px-4 py-2 space-x-2">
@@ -86,8 +86,21 @@ export function CommodityCard(
                     {commodityViewModel.status === "receiving" && (
                         <div className="w-full flex flex-row px-4 py-2 space-x-2">
                             <div className="w-full">
-                                <InfoBlocks label="取貨時間" value={
-                                    <Timer className="text-xl" initialDuration={commodityViewModel.receiveExpireDuration} />
+                                <InfoBlocks label={"剩餘領物時間"} value={
+                                    <Timer className="text-xl" initialDuration={
+                                        commodityViewModel.receiveExpireDuration
+                                    } />
+                                } />
+                            </div>
+                        </div>
+                    )}
+                    {commodityViewModel.status === "giving" && (
+                        <div className="w-full flex flex-row px-4 py-2 space-x-2">
+                            <div className="w-full">
+                                <InfoBlocks label={"剩餘擺貨時間"} value={
+                                    <Timer className="text-xl" initialDuration={
+                                        commodityViewModel.giveExpireDuration
+                                    } />
                                 } />
                             </div>
                         </div>
@@ -112,6 +125,21 @@ export function CommodityCard(
                             </Button>
                         ) : (
                             <>
+                            {commodityViewModel.status === "giving" && (
+                                <Button className="rounded-full bg-rose-500 text-white font-bold" onClick={() => {
+                                    setOpen(false);
+                                    commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                        receiverId: "",
+                                        status: "giveExpired",
+                                    });
+                                }}>
+                                    <div className="flex flex-row justify-center items-center space-x-2">
+                                        <LuX />
+                                        <span>放棄置物</span>
+                                    </div>
+                                </Button>
+                            )}
+                            {commodityViewModel.status === "receiving" && (
                                 <Button className="rounded-full bg-rose-500 text-white font-bold" onClick={() => {
                                     setOpen(false);
                                     commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
@@ -124,6 +152,24 @@ export function CommodityCard(
                                         <span>放棄取物</span>
                                     </div>
                                 </Button>
+                            )}
+                            {commodityViewModel.status === "giving" && (
+                                <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={() => {
+                                    setOpen(false);
+                                    commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                        receiverId: "",
+                                        status: CommodityStatus.finished,
+                                    });
+                                    // setShowRating(true);
+                                    // route.push(`/commodity/${commodityViewModel.id}`)
+                                }}>
+                                    <div className="flex flex-row justify-center items-center space-x-2">
+                                        <LuCheck />
+                                        <span>完成置物</span>
+                                    </div>
+                                </Button>
+                            )}
+                            {commodityViewModel.status === "receiving" && (
                                 <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={() => {
                                     setOpen(false);
                                     commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
@@ -138,6 +184,9 @@ export function CommodityCard(
                                         <span>完成取物</span>
                                     </div>
                                 </Button>
+                            )}
+                                
+                                
                             </>
                         )}
                     </DrawerFooter>
