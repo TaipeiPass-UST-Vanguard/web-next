@@ -26,6 +26,7 @@ import Image from "next/image";
 import { LabelChip } from "./chip";
 import { usePathname, useRouter } from "next/navigation";
 import { DialogClose } from "@radix-ui/react-dialog";
+import StatusWidget from "./statusWidget";
 
 const storageGroupUsecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
 const storageUsecase = new StorageUsecase(new StorageRepoImpl());
@@ -145,6 +146,7 @@ function StorageDrawerCardContent({
           <InfoBlocks label="總櫃位數量" value={String(storageGroup?.total ?? "")} />
         </div>
         <Separator />
+        
         <div className="flex flex-col gap-2">
           {
             storages.filter(storage => storage.commodityId != undefined).length === 0 ? (
@@ -192,27 +194,30 @@ function StorageCardView({
     <Skeleton className="w-full h-16 rounded-md" />
   ) : (
     <DialogClose>
-      <div className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1" onClick={
-        () => {
-          let params = new URLSearchParams(
-            {
-              commodityId: String(commodityId)
-            }
-          );
-          route.push(
-            pathName + "?" + params.toString()
-          )
-          // console.log("click")
-        }
-      }>
-        <p className="text-sky-700 text-left font-bold border-sky-900">{
-          commodity?.name ?? ""
-        }</p>
-        <div className="flex flex-row gap-1.5 font-semibold text-black text-[10px]">
-          <LabelChip label={commodity.category} />
-          <LabelChip label={commodity.condition} />
+      <div className="w-full rounded-md bg-white flex flex-col justify-center px-2 gap-1 py-1" onClick={
+          () => {
+            let params = new URLSearchParams(
+              {
+                commodityId: String(commodityId)
+              }
+            );
+            route.push(
+              pathName+ "?" + params.toString()
+            )
+            console.log(pathName+ "?" + params.toString())
+          }
+        }>
+          <div className="flex flex-row justify-start items-center">
+            <StatusWidget status={commodity.status}/>
+          </div>
+          <p className="text-sky-700 text-left font-bold border-sky-900">{
+            commodity?.name ?? ""
+          }</p>
+          <div className="flex flex-row gap-1.5 font-semibold text-black text-[10px]">
+            <LabelChip label={commodity.category}/>
+            <LabelChip label={commodity.condition}/>
+          </div>
         </div>
-      </div>
     </DialogClose>
   )
 }

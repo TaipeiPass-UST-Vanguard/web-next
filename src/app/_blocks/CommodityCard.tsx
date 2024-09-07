@@ -12,10 +12,17 @@ import StatusWidget from "@/components/statusWidget";
 import { LabelChip } from "@/components/chip";
 import { InfoBlocks } from "./InfoBlocks";
 import Stars from "@/components/star";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { LuPlus } from "react-icons/lu";
+import { LuCheck, LuPlus, LuX } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
+import { UserContext } from "../_context/userContext";
+import CommodityUsecase from "@/module/commodity/application/commodityUsecase";
+import CommodityRepoImpl from "@/module/commodity/presenter/commodityRepoImpl";
+import Timer from "@/components/timer";
+import CommodityStatus from "@/module/commodity/domain/commodityStatus";
+
+const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 
 export function CommodityCard(
     {
@@ -28,13 +35,15 @@ export function CommodityCard(
     const [open, setOpen] = useState(true);
     const route = useRouter();
     const pathName = usePathname() ?? "";
+    const user = useContext(UserContext);
+    useEffect(() => {
+        setOpen(true)
+    }, [commodityViewModel.receiverId, commodityViewModel.id])
     return <Drawer open={open} onOpenChange={(value) => {
-
         setOpen(value)
         if(value === false) {
             route.push(pathName)
         }
-        
     }}>
     <DrawerContent className="backdrop-blur-md bg-white/50 max-h-[600px] h-fit w-full flex flex-col justify-start items-start">
       <DrawerHeader className="w-full flex flex-col justify-start items-start space-y-1">
@@ -62,13 +71,79 @@ export function CommodityCard(
             <InfoBlocks label="到期日" value={String(commodityViewModel?.expireTimeString ?? "")}/>
         </div>
         </div>
-        <DrawerFooter className="w-full flex flex-row justify-end">
-            <Button className="rounded-full bg-sky-500 text-white font-bold">
-                <div className="flex flex-row justify-center items-center space-x-2">
-                <LuPlus/> 
-                <span>接收</span>
+        {
+            commodityViewModel.status === "receiving" ? (
+                <div className="w-full flex flex-row px-4 py-2 space-x-2">
+                    <div className="w-full">
+                        <InfoBlocks label="取貨時間" value={
+                            <Timer className="text-xl" initialDuration={commodityViewModel.receiveExpireDuration}/>
+                        }/>
+                    </div>
                 </div>
-            </Button>
+            ) : null
+            
+        }
+        <DrawerFooter className="w-full flex flex-row justify-end">
+            {
+                commodityViewModel.status === "pending" ? (
+                    <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={
+                        () => {
+                            setOpen(false)
+                            commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                receiverId: user.id,
+                                status: "receiving",
+                            })
+                            let params = new URLSearchParams(
+                                {
+                                  commodityId: String(commodityViewModel.id)
+                                }
+                              );
+                              route.push(
+                                pathName+ "?" + params.toString()
+                              )
+                        }
+                    }>
+                        <div className="flex flex-row justify-center items-center space-x-2">
+                        <LuPlus/> 
+                        <span>接收</span>
+                        </div>
+                    </Button>
+                ) : (
+                    <>
+                    <Button className="rounded-full bg-rose-500 text-white font-bold" onClick={
+                        () => {
+                            setOpen(false)
+                            commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                receiverId: "",
+                                status: "pending",
+                            })
+                            
+                        }
+                    }>
+                        <div className="flex flex-row justify-center items-center space-x-2">
+                        <LuX/> 
+                        <span>放棄取物</span>
+                        </div>
+                    </Button>
+                        <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={
+                        () => {
+                            setOpen(false)
+                            commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                receiverId: "",
+                                status: CommodityStatus.finished ,
+                            })
+                            // route.push(`/commodity/${commodityViewModel.id}`)
+                        }
+                    }>
+                        <div className="flex flex-row justify-center items-center space-x-2">
+                        <LuCheck/> 
+                        <span>完成取物</span>
+                        </div>
+                    </Button>
+                    
+                    </>
+                )
+            }
         </DrawerFooter>
     </DrawerContent>
   </Drawer>
