@@ -176,7 +176,7 @@ function StorageDrawerCardContent({
               <div className="flex items-center justify-center">
                 <Image
                   alt="empty"
-                  src="/svgs/undraw_empty_re_opql copy.svg"
+                  src={emptySvg}
                   width={300}
                   height={300}
                 />
