@@ -45,7 +45,9 @@ const RatingDrawer = ({ commodityID }: { commodityID: number }) => {
                         </DraggableStars>
                     </div>
                     <Button className="bg-black" onClick={() => {submit({ commodityID: commodityID, userID: user.id, reward: currentRating }) ;
-                        setIsOpen(!isOpen)}} >
+                        setIsOpen(!isOpen);
+                        window.location.reload();
+                        }} >
                         確認
                     </Button>
                 </DrawerContent>
