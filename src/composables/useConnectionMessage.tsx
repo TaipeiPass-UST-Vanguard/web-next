@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * 使用 flutter_inappwebview 的 Web Message Listeners 跟 app 做資料溝通
  * 目前定義的 connection object name 是 flutterObject
@@ -12,11 +14,11 @@
  * <strong>重要提醒：</strong>建議都在 /views 呼叫此 hook，為了方便跟 useHandleConnectionData 管理。
  */
 export const useConnectionMessage = (name: string, data: any) => {
-    // @ts-ignore
+    // @ts-expect-error
     if (typeof flutterObject !== 'undefined' && flutterObject) {
       const postInfo = JSON.stringify({ name, data });
   
-      // @ts-ignore
+      // @ts-expect-error
       flutterObject.postMessage(postInfo);
     }
   };
