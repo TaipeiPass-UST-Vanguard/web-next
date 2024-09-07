@@ -8,7 +8,7 @@ import { format } from "date-fns";
 export default class CommodityViewModel implements CommodityEntity {
     id: number;
     userId: string;
-    receiverId: string;
+    storageGroupId: number;
     name: string;
     description: string;
     images: number[];
@@ -24,7 +24,7 @@ export default class CommodityViewModel implements CommodityEntity {
     constructor(entity: CommodityEntity) {
         this.id = entity.id;
         this.userId = entity.userId;
-        this.receiverId = entity.receiverId;
+        this.storageGroupId = entity.storageGroupId;
         this.name = entity.name;
         this.description = entity.description;
         this.images = entity.images;
