@@ -1,52 +1,85 @@
+"use client";
 
+import StorageGroupUsecase from "@/module/storage/application/storageGroupUsecase";
+import StorageGroupRepoImpl from "@/module/storage/presenter/storageGroupRepoImpl";
+import { useEffect, useState, useTransition } from "react";
+import { Drawer, DrawerContent} from "./ui/drawer";
+import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel";
+// import StorageGroupViewModel from "@/module/storage/presenter/storageGroupViewModel";
+import StorageGroupEntity from "@/module/storage/domain/storageGroupEntity";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { ScrollArea } from "./ui/scroll-area";
+const usecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
 
-
-
-export default function SearchPopDialog({ isVisible, items }: { isVisible: boolean, items: []}){
-  
- 
-  
-  if (!isVisible) return null;
+const SearchDrawer = ({ items}:{ items: CommodityViewModel[]}) => {
+  const [isOpen, setIsOpen] = useState(true);
+  useEffect(()=>{
+    setIsOpen(true);
+  },[items])
+  if (items.length === 0 ) return <></>
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end">
-      <div className="bg-white w-full rounded-t-2xl p-4">
-        <div className="flex justify-end">
-          <button onClick={()=>{isVisible=false}} className="text-gray-500">✖ Close</button>
-        </div>
-
-        {/* List of items */}
-        <div className="space-y-4">
-          {items.map((item, index) => (
-            <div key={index} className="p-4 bg-gray-100 rounded-lg">
-              <h2 className="text-lg font-bold">{}</h2>
-              <div className="flex flex-wrap space-x-2 mt-2">
-                
-              </div>
-              <div className="flex items-center justify-end mt-2">
-                <span className="text-blue-500 flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 mr-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M16.88 3.549l2.122 2.121a5.5 5.5 0 010 7.778l-9.193 9.193a3 3 0 01-4.242 0l-2.12-2.121a5.5 5.5 0 010-7.779l9.193-9.193a3 3 0 014.243 0z"
-                    />
-                  </svg>
-                
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <div>
+      {/* Drawer Trigger (Button to open the drawer) */}
+      <Drawer open={isOpen} onOpenChange={()=>{setIsOpen(!open)}}>
+        <DrawerContent className="bg-white p-4 rounded-t-2xl h-[100vh] max-h-[600px] overflow-y-auto scroll-m-0"  >
+          
+        
+          <div className="space-y-4 mt-4">
+            {items.map((item) =><CommoditySearchCard key={item.id + item.name} commodity={item}/>)}
+          </div>
+          
+        </DrawerContent>
+      </Drawer>
     </div>
   );
+};
 
+function CommoditySearchCard(
+  {
+    commodity
+  } : {
+    commodity: CommodityViewModel
+  }){
+  const [groupData, setGroupData] = useState<StorageGroupEntity>()
+
+  const [isLoading, startGetGroupData] = useTransition()
+  
+  useEffect(() => {
+    startGetGroupData(async () => {
+      const entity = await usecase.getStorageGroup(commodity.storageGroupId);
+      setGroupData(entity)
+    })
+    }, [commodity]
+  )
+
+
+  return (
+      <div className="p-4 bg-gray-100 rounded-lg">
+        <h2 className="text-lg font-bold">{commodity.name}</h2>
+        <div className="flex flex-wrap space-x-2 mt-2">
+        <span
+          className="bg-gray-200 text-gray-700 rounded-full px-2 py-1 text-sm"
+        >
+          {commodity.category}
+        </span>
+        <span
+          className="bg-gray-200 text-gray-700 rounded-full px-2 py-1 text-sm"
+        >
+          {commodity.condition}
+        </span>
+        </div>
+        <div className="flex items-center justify-end mt-2">
+          <span className="text-blue-500 flex items-center">
+            <FaMapMarkerAlt />
+              
+        
+            { isLoading || groupData!=undefined  ? groupData?.name ?? "" : null}
+          </span>
+        </div>
+      </div>
+    )
 }
+
+export default SearchDrawer;
+

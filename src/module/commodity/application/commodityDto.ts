@@ -1,10 +1,9 @@
-import { Duration } from "luxon";
 import CommodityEntity from "../domain/commodityEntity";
 
 export default class CommodityDto implements CommodityEntity {
     id: number;
     userId: string;
-    receiverId: string;
+    storageGroupId: number;
     name: string;
     description: string;
     images: number[];
@@ -20,7 +19,7 @@ export default class CommodityDto implements CommodityEntity {
     constructor(entity: CommodityEntity) {
         this.id = entity.id;
         this.userId = entity.userId;
-        this.receiverId = entity.receiverId;
+        this.storageGroupId = entity.storageGroupId;
         this.name = entity.name;
         this.description = entity.description;
         this.images = entity.images;
@@ -38,7 +37,7 @@ export default class CommodityDto implements CommodityEntity {
         return {
             id: json.id,
             userId: json.userId,
-            receiverId: json.receiverId,
+            storageGroupId: json.storageGroupId,
             name: json.name,
             description: json.description,
             images: json.images,
