@@ -1,5 +1,5 @@
 import RewardEntity from "../domain/rewardEntity";
-import RewardRepo, { RewardCreateParams } from "../domain/rewardRepo";
+import RewardRepo from "../domain/rewardRepo";
 
 export default class RewardUsecase {
     private _repo: RewardRepo;

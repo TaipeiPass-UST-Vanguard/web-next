@@ -29,9 +29,7 @@ const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 export function CommodityCard(
   {
     commodityViewModel,
-    lock = false
   }: {
-    lock?: boolean;
     commodityViewModel: CommodityViewModel;
   }
 ) {
@@ -115,7 +113,7 @@ export function CommodityCard(
                   receiverId: user.id,
                   status: "receiving",
                 });
-                let params = new URLSearchParams({
+                const params = new URLSearchParams({
                   commodityId: String(commodityViewModel.id)
                 });
                 route.push(pathName + "?" + params.toString());
