@@ -15,7 +15,7 @@ export type CommodityCreateParams = {
     description: string;
     name: string;
     userId: string;
-    storageGroupId?: number;
+    storageGroupId: number;
 };
 
 export default interface CommodityRepo {
