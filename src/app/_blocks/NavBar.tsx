@@ -18,7 +18,7 @@ import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel"
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 
 async function search(keyword: string) {
-    const entities = await commodityUsecase.getAllCommodity({ keyword });
+    const entities = await commodityUsecase.getAllCommodity({ keyword: keyword, location: [25.021721, 121.535205]});
     const newList: CommodityEntity[] = [];
     entities.map((item, _) => {
         newList.push(item)
@@ -61,7 +61,7 @@ export function NavBar({ user }: {
                 name: ''
             }
         )
-        const commodityList = await search(values.name);
+        const commodityList = await search(values.name, );
         setCommodityList(commodityList.map(entity => new CommodityViewModel(entity)));
 
     }

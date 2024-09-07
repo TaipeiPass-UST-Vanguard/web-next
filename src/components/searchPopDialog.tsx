@@ -21,11 +21,11 @@ const SearchDrawer = ({ items}:{ items: CommodityViewModel[]}) => {
   return (
     <div>
       {/* Drawer Trigger (Button to open the drawer) */}
-      <Drawer open={isOpen} onOpenChange={()=>{setIsOpen(!open)}}>
-        <DrawerContent className="bg-white p-4 rounded-t-2xl h-[100vh] max-h-[600px] overflow-y-auto scroll-m-0"  >
+      <Drawer open={isOpen} onOpenChange={()=>{setIsOpen(!open)}} >
+        <DrawerContent className="bg-white p-4 rounded-t-2xl  max-h-[600px]"  >
           
         
-          <div className="space-y-4 mt-4">
+          <div className="space-y-4 mt-4 h-[500px] overflow-y-auto">
             {items.map((item) =><CommoditySearchCard key={item.id + item.name} commodity={item}/>)}
           </div>
           
