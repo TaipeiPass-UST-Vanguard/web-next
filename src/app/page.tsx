@@ -1,39 +1,23 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
-import StorageGroupUsecase from "@/module/storage/application/storageGroupUsecase";
-import StorageUsecase from "@/module/storage/application/storageUsecase";
-import StorageGroupRepoImpl from "@/module/storage/presenter/storageGroupRepoImpl";
-import StorageGroupViewModel from "@/module/storage/presenter/storageGroupViewModel";
-import StorageRepoImpl from "@/module/storage/presenter/storageRepoImpl";
-import StorageViewModel from "@/module/storage/presenter/storageViewModel";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { NavBar } from "./_blocks/NavBar";
-import { UserEntity } from "@/module/storage/domain/userEntity";
 import { useHandleConnectionData } from "@/composables/useHandleConnectionData";
 import { useConnectionMessage } from "@/composables/useConnectionMessage";
 import { LatLngTuple } from "leaflet";
-import { useRouter, usePathname, useSearchParams} from 'next/navigation'
+import { useSearchParams} from 'next/navigation'
 import CommodityUsecase from "@/module/commodity/application/commodityUsecase";
 import CommodityRepoImpl from "@/module/commodity/presenter/commodityRepoImpl";
 import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel";
 import { CommodityCard } from "./_blocks/CommodityCard";
+import { UserContext } from "./_context/userContext";
 
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 const Map = dynamic(() => import("@/components/map"), {
   ssr: false
 });
 
-const storageGroupUsecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
-const storageUsecase = new StorageUsecase(new StorageRepoImpl());
-
 export default function Page() {
-  const fakeUser = {
-    name: "test",
-    avatar: "https://www.gravatar.com/avatar"
-  } as UserEntity;
   const [commodityViewModel, setCommodityViewModel] = useState<CommodityViewModel | undefined>(undefined);
   const searchParams = useSearchParams();
   
@@ -73,7 +57,12 @@ export default function Page() {
   return (
     <div className="h-screen relative">
       <div className="absolute top-20 h-fit w-full z-10 p-4">
-        <NavBar user={fakeUser} />
+        <UserContext.Consumer>
+          {
+            (value) => <NavBar user={value} />
+          }
+
+        </UserContext.Consumer>
       </div>
       <div className="absolute inset-0 z-0">
         <Map

@@ -3,10 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { UserEntity } from "@/module/storage/domain/userEntity";
+import { UserEntity } from "@/module/user/doamain/userEntity";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { LuAlignJustify, LuSearch } from "react-icons/lu";
+import CommodityUsecase from "@/module/commodity/application/commodityUsecase"
+import CommodityRepoImpl from "@/module/commodity/presenter/commodityRepoImpl";
+const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
+
+async function search(keyword: string) {
+    const entities = await commodityUsecase.getAllCommodity({keyword});
+    entities.map((item, _ )=>{
+        console.log(item.name);
+    });
+}
+
 function Avatar({name}: {name: string}){
     return (
         <div className="w-10 h-10 rounded-full bg-gray-500 flex flex-col justify-center items-center backdrop-blur-lg">
@@ -41,6 +52,7 @@ export function NavBar({user} : {
                 name: ''
             }
         )
+        search(values.name );
     }
 
     return (

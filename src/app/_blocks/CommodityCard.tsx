@@ -52,7 +52,7 @@ export function CommodityCard(
         <LabelChip label={commodityViewModel.condition}/>
       </div>
       </DrawerHeader>
-      <div className="w-full flex flex-row px-4 py-2">
+      <div className="w-full flex flex-row px-4 py-2 space-x-2">
         <div className="w-full">
             <InfoBlocks label="賣家評分" value={
                 <Stars star={3.4}/>
