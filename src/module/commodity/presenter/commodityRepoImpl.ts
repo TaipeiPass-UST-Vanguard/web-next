@@ -61,7 +61,7 @@ export default class CommodityRepoImpl implements CommodityRepo {
             },
         });
 
-        if (response.status!== 200) return Promise.reject(response);
+        if (response.status!== 204) return Promise.reject(response);
 
         return CommodityDto.fromJson(response.data["data"]);
     }
