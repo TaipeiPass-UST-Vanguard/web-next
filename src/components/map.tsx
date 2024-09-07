@@ -27,6 +27,7 @@ import { LabelChip } from "./chip";
 import { usePathname, useRouter } from "next/navigation";
 import { DialogClose } from "@radix-ui/react-dialog";
 import CommodityStatus from "@/module/commodity/domain/commodityStatus";
+import emptySvg from "@/public/images/undraw_empty_re_opql copy.svg";
 
 const storageGroupUsecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
 const storageUsecase = new StorageUsecase(new StorageRepoImpl());
@@ -175,7 +176,7 @@ function StorageDrawerCardContent({
               <div className="flex items-center justify-center">
                 <Image
                   alt="empty"
-                  src="/images/empty.png"
+                  src={emptySvg}
                   width={300}
                   height={300}
                 />
