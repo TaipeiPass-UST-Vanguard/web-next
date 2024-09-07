@@ -207,7 +207,7 @@ export function CommodityCard(
                 </div>
             )}
             {showRating && (
-                <RatingDrawer items={[commodityViewModel]} />
+                <RatingDrawer commodityID={commodityViewModel.id} />
             )}
         </>
     );
