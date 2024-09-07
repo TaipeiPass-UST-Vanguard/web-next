@@ -25,7 +25,7 @@ export default class CommodityRepoImpl implements CommodityRepo {
         if (response.status !== 200)
             return Promise.reject(response);
 
-        return response.data.map((item: any) => CommodityDto.fromJson(item));
+        return (response.data["data"] as any[]).map((item) => CommodityDto.fromJson(item));
     }
 
     async get(id: number): Promise<CommodityEntity> {
