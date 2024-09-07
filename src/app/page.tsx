@@ -11,10 +11,10 @@ import StorageViewModel from "@/module/storage/presenter/storageViewModel";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { NavBar } from "./_blocks/NavBar";
-import { UserEntity } from "@/module/storage/domain/userEntity";
 import { useHandleConnectionData } from "@/composables/useHandleConnectionData";
 import { useConnectionMessage } from "@/composables/useConnectionMessage";
 import { LatLngTuple } from "leaflet";
+import { UserContext } from "./_context/userContext";
 
 const Map = dynamic(() => import("@/components/map"), {
   ssr: false
@@ -24,13 +24,6 @@ const storageGroupUsecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
 const storageUsecase = new StorageUsecase(new StorageRepoImpl());
 
 export default function Page() {
-  const fakeUser = {
-    name: "test",
-    avatar: "https://www.gravatar.com/avatar"
-  } as UserEntity;
-
-  // return (
-
   const [position, setPosition] = useState<LatLngTuple | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [storageGroups, setStorageGroups] = useState<StorageGroupViewModel[]>([]);
@@ -77,7 +70,12 @@ export default function Page() {
   return (
     <div className="h-screen relative">
       <div className="absolute top-20 h-fit w-full z-10 p-4">
-        <NavBar user={fakeUser} />
+        <UserContext.Consumer>
+          {
+            (value) => <NavBar user={value} />
+          }
+
+        </UserContext.Consumer>
       </div>
       <div className="absolute inset-0 z-0">
         <Map

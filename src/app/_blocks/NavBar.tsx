@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { UserEntity } from "@/module/storage/domain/userEntity";
+import { UserEntity } from "@/module/user/doamain/userEntity";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { LuAlignJustify, LuSearch } from "react-icons/lu";
