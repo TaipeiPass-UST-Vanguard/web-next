@@ -24,6 +24,8 @@ import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel"
 import { Skeleton } from "./ui/skeleton";
 import  Image  from "next/image";
 import { LabelChip } from "./chip";
+import { usePathname, useRouter } from "next/navigation";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 const storageGroupUsecase = new StorageGroupUsecase(new StorageGroupRepoImpl());
 const storageUsecase = new StorageUsecase(new StorageRepoImpl());
@@ -42,38 +44,25 @@ export default function Map({
 }: MapProps) {
 
   // const [position, setPosition] = useState<LatLngTuple | null>(null);
-  const [open, setOpen] = useState(false);
-
+  const [isGroupDialogOpen, setGroupDialogOpen] = useState(false);
   const [storageGroups, setStorageGroups] = useState<StorageGroupViewModel[]>([]);
   const [selectedStorageGroups, setSelectedStorageGroups] = useState<StorageGroupViewModel>();
-
+  const route = useRouter();
+  const pathName = usePathname() ?? "";
   async function fetchAllStorageGroup() {
     const entities = await storageGroupUsecase.getAllStorageGroup();
     setStorageGroups(entities.map(entity => new StorageGroupViewModel(entity)));
   }
 
   useEffect(() => {
-    // navigator.geolocation.getCurrentPosition(
-    //   (pos) => {
-    //     console.log(`Location: ${pos.coords.latitude}, ${pos.coords.longitude}`);
-    //     setPosition([pos.coords.latitude, pos.coords.longitude]);
-    //   },
-    //   (error) => {
-    //     console.error(`Error getting location: ${error.message}`);
-    //   },
-    //   {
-    //     enableHighAccuracy: true,
-    //     timeout: 10000,
-    //     maximumAge: 0,
-    //   }
-    // );
     fetchAllStorageGroup().catch(console.error);
   }, []);
 
   function onClickMarker(storageGroup: StorageGroupViewModel) {
-    setOpen(true)
+    setGroupDialogOpen(true)
     setSelectedStorageGroups(storageGroup)
   }
+  
   
   return position === null || storageGroups.length === 0 ?  (
     <div className="w-full h-full flex flex-col justify-center items-center bg-white">
@@ -88,9 +77,12 @@ export default function Map({
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
-        <Drawer open={open} onOpenChange={
+        <Drawer open={isGroupDialogOpen} onOpenChange={
           (isOpen) => {
-            setOpen(isOpen);
+            setGroupDialogOpen(isOpen);
+            if(isOpen){
+              route.push(pathName)
+            }
           }
         }>
               <DrawerTrigger >
@@ -164,7 +156,7 @@ function StorageDrawerCardContent({
                   />
                 ):
                 storages.filter(storage => storage.commodityId != undefined).map((storage) => (
-                  <StorageCardView key={storage.commodityId} commodityId={storage.commodityId!}/>
+                  <StorageCardView key={storage.commodityId + storage.createdTime.toISOString()} commodityId={storage.commodityId!}/>
                 ))
               }
             </div>
@@ -177,9 +169,12 @@ function StorageCardView({
   commodityId,
 }: {
   commodityId: number;
+  
 }){
   const [commodity, setCommodity] = useState<CommodityViewModel>();
   const [isLoading, startLoadingCommodity] = useTransition();
+  const route = useRouter();
+  const pathName = usePathname() 
 
   useEffect(() => {
     startLoadingCommodity(async () => {
@@ -196,7 +191,20 @@ function StorageCardView({
   return isLoading || !commodity ? (
     <Skeleton className="w-full h-16 rounded-md"/>
   ) : (
-    <div className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1">
+    <DialogClose>
+      <div className="w-full h-16 rounded-md bg-white flex flex-col justify-center px-2 gap-1" onClick={
+      () => {
+        let params = new URLSearchParams(
+          {
+            commodityId: String(commodityId)
+          }
+        );
+        route.push(
+          pathName+ "?" + params.toString()
+        )
+        // console.log("click")
+      }
+    }>
       <p className="text-sky-700 text-left font-bold border-sky-900">{
         commodity?.name ?? ""
       }</p>
@@ -205,5 +213,6 @@ function StorageCardView({
         <LabelChip label={commodity.condition}/>
       </div>
     </div>
+    </DialogClose>
   )
 }

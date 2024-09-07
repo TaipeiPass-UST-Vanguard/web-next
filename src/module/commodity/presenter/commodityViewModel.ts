@@ -3,6 +3,7 @@ import CommodityEntity from "../domain/commodityEntity";
 import CommodityStatus from "../domain/commodityStatus";
 import CommodityCategory from "../domain/commodityCategory";
 import CommodityCondition from "../domain/commodityCondition";
+import { format } from "date-fns";
 
 export default class CommodityViewModel implements CommodityEntity {
     id: number;
@@ -33,6 +34,10 @@ export default class CommodityViewModel implements CommodityEntity {
         this.receiveExpireSeconds = entity.receiveExpireSeconds;
         this.createdTime = entity.createdTime;
         this.updatedTime = entity.updatedTime;
+    }
+
+    get expireTimeString(): string {
+        return format(this.expireTime, "yyyy-MM-dd");
     }
 
     get giveExpireDuration(): Duration {
