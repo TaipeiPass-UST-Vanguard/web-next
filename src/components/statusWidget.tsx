@@ -23,14 +23,14 @@ const StatusWidget = ({ status }:{status:string}) => {
           <span className="text-black font-bold text-sm">已過期</span>
         </div>
       );
-    case CommodityStatus.pending:
+    case CommodityStatus.receiving:
       return (
         <div className={`inline-flex items-center py-0.5 px-3 rounded-full bg-gray-100`}>
           <div className={`w-2.5 h-2.5 rounded-full mr-2 bg-blue-700`}></div>
           <span className="text-black font-bold text-sm">訂單進行中</span>
         </div>
       );
-    case CommodityStatus.receiving:
+    case CommodityStatus.pending:
       return (
         <div className={`inline-flex items-center py-0.5 px-3 rounded-full bg-green-100`}>
           <div className={`w-2.5 h-2.5 rounded-full mr-2 bg-green-500`}></div>

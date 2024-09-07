@@ -12,10 +12,15 @@ import StatusWidget from "@/components/statusWidget";
 import { LabelChip } from "@/components/chip";
 import { InfoBlocks } from "./InfoBlocks";
 import Stars from "@/components/star";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { LuPlus } from "react-icons/lu";
 import { Button } from "@/components/ui/button";
+import { UserContext } from "../_context/userContext";
+import CommodityUsecase from "@/module/commodity/application/commodityUsecase";
+import CommodityRepoImpl from "@/module/commodity/presenter/commodityRepoImpl";
+
+const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 
 export function CommodityCard(
     {
@@ -28,6 +33,7 @@ export function CommodityCard(
     const [open, setOpen] = useState(true);
     const route = useRouter();
     const pathName = usePathname() ?? "";
+    const user = useContext(UserContext);
     return <Drawer open={open} onOpenChange={(value) => {
 
         setOpen(value)
@@ -63,12 +69,25 @@ export function CommodityCard(
         </div>
         </div>
         <DrawerFooter className="w-full flex flex-row justify-end">
-            <Button className="rounded-full bg-sky-500 text-white font-bold">
-                <div className="flex flex-row justify-center items-center space-x-2">
-                <LuPlus/> 
-                <span>接收</span>
-                </div>
-            </Button>
+            {
+                commodityViewModel.status === "pending" ? (
+                    <Button className="rounded-full bg-sky-500 text-white font-bold" onClick={
+                        () => {
+                            setOpen(false)
+                            commodityUsecase.updateCommodityStatus(commodityViewModel.id, {
+                                receiverId: user.id,
+                                status: "receiving",
+                            })
+                            // route.push(`/commodity/${commodityViewModel.id}`)
+                        }
+                    }>
+                        <div className="flex flex-row justify-center items-center space-x-2">
+                        <LuPlus/> 
+                        <span>接收</span>
+                        </div>
+                    </Button>
+                ) : null
+            }
         </DrawerFooter>
     </DrawerContent>
   </Drawer>
