@@ -17,7 +17,7 @@ import StorageGroupRepoImpl from "@/module/storage/presenter/storageGroupRepoImp
 import StorageUsecase from "@/module/storage/application/storageUsecase";
 import StorageRepoImpl from "@/module/storage/presenter/storageRepoImpl";
 import { LuPlus } from "react-icons/lu";
-import { LoadingWidget } from "./LoadingWidget";
+import { LoadingWidget } from "./loadingWidget";
 import CommodityUsecase from "@/module/commodity/application/commodityUsecase";
 import CommodityRepoImpl from "@/module/commodity/presenter/commodityRepoImpl";
 import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel";
