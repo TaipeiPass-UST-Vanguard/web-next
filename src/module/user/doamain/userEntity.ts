@@ -1,5 +1,5 @@
 export interface UserEntity {
-    id: number;
+    id: string;
     name: string;
     avatar: string;
 }

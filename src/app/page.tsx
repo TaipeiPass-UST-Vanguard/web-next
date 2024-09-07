@@ -11,7 +11,7 @@ import StorageViewModel from "@/module/storage/presenter/storageViewModel";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { NavBar } from "./_blocks/NavBar";
-import { UserEntity } from "@/module/storage/domain/userEntity";
+import { UserEntity } from "@/module/user/doamain/userEntity";
 import { useHandleConnectionData } from "@/composables/useHandleConnectionData";
 import { useConnectionMessage } from "@/composables/useConnectionMessage";
 import { LatLngTuple } from "leaflet";
