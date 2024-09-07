@@ -19,4 +19,8 @@ export default class CommodityUsecase {
     async createCommodity(params: CommodityCreateParams): Promise<CommodityEntity> {
         return this._repo.create(params);
     }
+
+    async deleteCommodity(id: number): Promise<void> {
+        await this._repo.delete(id);
+    }
 }

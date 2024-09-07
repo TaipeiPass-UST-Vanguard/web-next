@@ -21,4 +21,6 @@ export default interface CommodityRepo {
     get(id: number): Promise<CommodityEntity>;
 
     create({}: CommodityCreateParams): Promise<CommodityEntity>;
+
+    delete(id: number): Promise<void>;
 }

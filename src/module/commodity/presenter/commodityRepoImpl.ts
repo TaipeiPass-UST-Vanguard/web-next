@@ -43,4 +43,10 @@ export default class CommodityRepoImpl implements CommodityRepo {
 
         return CommodityDto.fromJson(response.data["data"]);
     }
+
+    async delete(id: number): Promise<void> {
+        const response = await axios.delete(new URL(`/api/commodity/commodity/${id}`, BACKEND_URL).href);
+
+        if (response.status!== 204) return Promise.reject(response);
+    }
 }
