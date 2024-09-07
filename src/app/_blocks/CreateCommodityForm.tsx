@@ -2,7 +2,7 @@ import commodityViewModel from "@/module/commodity/presenter/commodityViewModel"
 import { usePathname, useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../_context/userContext";
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import StatusWidget from "@/components/statusWidget";
 import { LabelChip } from "@/components/chip";
 import { InfoBlocks } from "./InfoBlocks";
@@ -13,6 +13,13 @@ import { CommodityCreateParams } from "@/module/commodity/domain/commodityRepo";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem} from "@/components/ui/select";
+import CommodityCategory from "@/module/commodity/domain/commodityCategory";
+// import { SelectItem } from "@radix-ui/react-select";
+import { commodityCategoryString, commodityConditionString } from "@/module/commodity/presenter/commodityStrings";
+import CommodityCondition from "@/module/commodity/domain/commodityCondition";
+import { Button } from "@/components/ui/button";
+import { LuPlus } from "react-icons/lu";
 
 const focusSettings =
   "focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:bg-background focus-visible:shadow-lg";
@@ -22,6 +29,7 @@ export function CreateCommodityForm(){
     const [open, setOpen] = useState(true);
     const route = useRouter();
     const pathName = usePathname() ?? "";
+    
     const user = useContext(UserContext);
 
     const form = useForm<CommodityCreateParams>({
@@ -29,21 +37,26 @@ export function CreateCommodityForm(){
             name: "",
             description: "",
             userId: user?.id ?? 0,
-            category: "",
+            category: undefined,
             condition: "",
         }
     })
 
+    function onSubmit(data: CommodityCreateParams){
+        console.log(data)
+    }
+
 
     return <Drawer open={open} onOpenChange={(value) => {
-        setOpen(value)
-        if(value === false) {
-            route.push(pathName)
-        }
-    }}>
+            setOpen(value)
+            if(value === false) {
+                route.push(pathName)
+            }
+        }}>
+    
     <DrawerContent className="backdrop-blur-md bg-white/50 max-h-[600px] h-fit w-full flex flex-col justify-start items-start">
         <Form {...form}>
-            <form className="w-full h-[500px]">
+            <form className="w-full h-[500px]" onSubmit={form.handleSubmit(onSubmit)}>
                  <DrawerHeader className="w-full flex flex-col justify-start items-start space-y-1">
                     <div>
                         <StatusWidget status={"draft"}/>
@@ -94,43 +107,95 @@ export function CreateCommodityForm(){
                             )}
                         />
                     </DrawerDescription>
-                        <InfoBlocks label="放置地點" value={
+                    
+                </DrawerHeader>
+                <div className="w-full flex flex-row space-x-2 p-4">
+                    <InfoBlocks label="物品類別" value={
+                        <FormField
+                            control={form.control}
+                            name={"category"}
+                            render={({ field }) => (
+                                <FormItem className="w-full">
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger
+                                            className={cn(
+                                                'w-full text-sm font-normal border-0 bg-transparent px-2 py-1 m-0 shadow-none',
+                                                focusSettings,
+                                                hoverSettings,
+                                            )}
+                                            >
+                                            <SelectValue
+                                                className="w-full"
+                                                placeholder="Select a verified email to display"
+                                            />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {
+                                            CommodityCategory.values.map((category , index) => (
+                                                <SelectItem value={category} key={"ca" + index}>
+                                                    {commodityCategoryString(category)}
+                                                </SelectItem>
+                                            ))
+                                        }
+                                    </SelectContent>
+                                    </Select>
+                                <FormMessage />
+                                </FormItem>
+                        )}
+                        />
+                    }/>
+                    <InfoBlocks label="使用情況" value={
+                        <FormField
+                        control={form.control}
+                        name={"condition"}
+                        render={({ field }) => (
                             <FormItem className="w-full">
-                            <FormControl>
-                              <Select
-                                disabled={isDisabled}
+                                <Select
                                 onValueChange={field.onChange}
                                 defaultValue={field.value}
-                              >
+                                >
                                 <FormControl>
-                                  <SelectTrigger
+                                    <SelectTrigger
                                     className={cn(
-                                      'w-full text-sm font-normal border-0 bg-transparent px-2 py-1 m-0 required:after:content-["*"]',
-                                      focusSettings,
-                                      hoverSettings,
-                                      textCss
+                                        'w-full text-sm font-normal border-0 bg-transparent px-2 py-1 m-0  shadow-none',
+                                        focusSettings,
+                                        hoverSettings,
                                     )}
-                                  >
+                                    >
                                     <SelectValue
-                                      className="w-full"
-                                      placeholder="Select a verified email to display"
+                                        className="w-full"
+                                        placeholder="物品使用情況"
                                     />
-                                  </SelectTrigger>
+                                    </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  {...options.map((option, index) => (
-                                    <SelectItem key={index} value={option.value} className="py-2">
-                                      {option.component ?? option.value}
-                                    </SelectItem>
-                                  ))}
+                                    {
+                                    CommodityCondition.values.map((condition, index) => (
+                                        <SelectItem value={condition} key={"c" + index}>
+                                        {commodityConditionString(condition)}
+                                        </SelectItem>
+                                    ))
+                                    }
                                 </SelectContent>
-                              </Select>
-                            </FormControl>
-                            {isDisabled ? <LuLock /> : null}
+                                </Select>
                             <FormMessage />
-                          </FormItem>
-                        }/>
-                </DrawerHeader>
+                            </FormItem>
+                        )}
+                        />
+                    }/>
+                    </div>
+                    <DrawerFooter className="w-full flex flex-row justify-end">
+                
+                    <Button type="submit" className="rounded-full bg-sky-500 text-white font-bold">
+                        <div className="flex flex-row justify-center items-center space-x-2">
+                        <LuPlus/> 
+                        <span>新增二手商品</span>
+                        </div>
+                    </Button>
+                
+                </DrawerFooter>
             </form>
         </Form>
     </DrawerContent>

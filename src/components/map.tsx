@@ -143,7 +143,8 @@ function StorageDrawerCardContent({
             () => {
               let params = new URLSearchParams(
                 {
-                  groupId: "-1"
+                  groupId: "-1",
+                  defaultGroupId: String(storageGroup.id)
                 }
               );
               route.push(
