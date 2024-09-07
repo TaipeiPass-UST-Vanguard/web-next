@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+"use client";
 
 /**
  *
@@ -7,14 +7,14 @@ import { useEffect } from "react";
  * <strong>重要提醒：</strong>建議都在 /views 呼叫此 hook，每一個 view 只呼叫一次，該頁面所需的 app 資料都在屬於頁面的 view 處理，不要在 /components 層呼叫，以免不好管理，也避免監聽器重複創建造成非預期錯誤。
  */
 export const useHandleConnectionData = (cb?: (event: { data: string }) => void) => {
-  // @ts-ignore
+  // @ts-expect-error
   if (typeof flutterObject !== 'undefined' && flutterObject) {
     if (cb) {
-      // @ts-ignore
+      // @ts-expect-error
       flutterObject.addEventListener('message', cb);
 
       return () => {
-        // @ts-ignore
+        // @ts-expect-error
         flutterObject.removeEventListener('message', cb);
       };
     }
