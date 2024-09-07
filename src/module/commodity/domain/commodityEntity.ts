@@ -1,8 +1,7 @@
-import { Duration } from "luxon";
-
 export default interface CommodityEntity {
     id: number;
     userId: string;
+    receiverId: string;
     name: string;
     description: string;
     images: number[];

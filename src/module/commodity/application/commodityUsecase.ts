@@ -1,6 +1,11 @@
 import CommodityEntity from "../domain/commodityEntity";
 import CommodityRepo, { CommodityCreateParams, CommodityQueryParams } from "../domain/commodityRepo";
 
+type CommodityUpdateParams = {
+    receiverId: string;
+    status: string;
+};
+
 export default class CommodityUsecase {
     private _repo: CommodityRepo;
 
@@ -23,8 +28,8 @@ export default class CommodityUsecase {
     /**
      * @param status Use `CommodityStatus` in "@/module/commodity/domain/commodityStatus"
      */
-    async updateCommodityStatus(id: number, status: string): Promise<CommodityEntity> {
-        return this._repo.update(id, { status: status });
+    async updateCommodityStatus(id: number, params: CommodityUpdateParams): Promise<CommodityEntity> {
+        return this._repo.update(id, params);
     }
 
     async deleteCommodity(id: number): Promise<void> {
