@@ -3,6 +3,8 @@ export default interface StorageGroupEntity {
     name: string;
     longitude: number;
     latitude: number;
+    available: number;
+    total: number;
     createdTime: Date;
     updatedTime: Date;
 }
