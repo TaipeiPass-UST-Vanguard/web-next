@@ -1,43 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
-import { useHandleConnectionData } from "@/composables/useHandleConnectionData";
-import { useConnectionMessage } from "@/composables/useConnectionMessage";
 
 type MapProps = {
+  position?: LatLngTuple;
   locations?: LatLngTuple[];
   zoom?: number;
   onClick?: (index: number) => void;
 };
 
 export default function Map({
+  position,
   locations = [],
   zoom = 18,
   onClick,
 }: MapProps) {
-  const [position, setPosition] = useState<LatLngTuple | null>(null);
-
-  useEffect(() => {
-    const handlePosition = (event: { data: string }) => {
-      try {
-        const result = JSON.parse(event.data);
-        console.log(result);
-        if (result.name === 'location') {
-          setPosition([result.data.latitude, result.data.longitude]);
-        }
-      } catch (error) {
-        console.error('Error handling message:', error);
-      }
-    };
-
-    useHandleConnectionData(handlePosition);
-    useConnectionMessage('location', null);
-  }, []);
 
   if (position === null) {
     return (

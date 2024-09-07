@@ -12,6 +12,9 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { NavBar } from "./_blocks/NavBar";
 import { UserEntity } from "@/module/storage/domain/userEntity";
+import { useHandleConnectionData } from "@/composables/useHandleConnectionData";
+import { useConnectionMessage } from "@/composables/useConnectionMessage";
+import { LatLngTuple } from "leaflet";
 
 const Map = dynamic(() => import("@/components/map"), {
   ssr: false
@@ -28,6 +31,7 @@ export default function Page() {
 
   // return (
 
+  const [position, setPosition] = useState<LatLngTuple | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [storageGroups, setStorageGroups] = useState<StorageGroupViewModel[]>([]);
   const [storages, setStorages] = useState<StorageViewModel[]>([]);
@@ -44,6 +48,18 @@ export default function Page() {
     setStorages(entities.map(entity => new StorageViewModel(entity)));
   }
 
+  const handlePosition = (event: { data: string }) => {
+    try {
+      const result = JSON.parse(event.data);
+      console.log(result);
+      if (result.name === 'location') {
+        setPosition([result.data.latitude, result.data.longitude]);
+      }
+    } catch (error) {
+      console.error('Error handling message:', error);
+    }
+  };
+
   useEffect(() => {
     fetchAllStorageGroup().catch(console.error);
   }, []);
@@ -55,6 +71,9 @@ export default function Page() {
     setIsDrawerOpen(true);
   }
 
+  useHandleConnectionData(handlePosition);
+  useConnectionMessage('location', null);
+
   return (
     <div className="h-screen relative">
       <div className="absolute top-20 h-fit w-full z-10 p-4">
@@ -62,6 +81,7 @@ export default function Page() {
       </div>
       <div className="absolute inset-0 z-0">
         <Map
+          position={position ?? [25.033, 121.565]}
           locations={storageGroups.map(group => [group.latitude, group.longitude])}
           onClick={handleLocationClicked}
         />
