@@ -23,28 +23,35 @@ function Star({ x }: { x: number }) {
   );
 }
 
-// Stars component with tap and drag rating feature
-export default function DraggableStars({ initialRating }: { initialRating: number }) {
-  const [rating, setRating] = useState(initialRating); // State for rating
-  const [isDragging, setIsDragging] = useState(false); // State to track if dragging is happening
-  const containerRef = useRef<HTMLDivElement | null>(null); // Ref to track star container
 
-  // Function to update the rating based on mouse or touch position
+interface DraggableStarsProps {
+  initialRating: number;
+  onRatingChange: (newRating: number) => void; // Add a callback for rating change
+}
+
+const DraggableStars: React.FC<DraggableStarsProps> = ({ initialRating, onRatingChange }) => {
+  const [rating, setRating] = useState(initialRating);
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   const updateRatingFromPosition = (clientX: number) => {
     if (!containerRef.current) return;
 
     const { left, width } = containerRef.current.getBoundingClientRect();
-    const relativeX = clientX - left; // Calculate the position within the star container
-    const newRating = Math.ceil((relativeX / width) * 5); // Convert the position to a 1-5 rating
-    setRating(Math.max(1, Math.min(5, newRating))); // Ensure the rating stays within 1-5
+    const relativeX = clientX - left;
+    const newRating = Math.ceil((relativeX / width) * 5);
+    const finalRating = Math.max(1, Math.min(5, newRating));
+    
+    setRating(finalRating);
+    onRatingChange(finalRating); // Call the callback when the rating changes
   };
 
-  // Function to handle click/tap on a specific star
   const updateRatingFromClick = (index: number) => {
-    setRating(index + 1); // Update rating directly based on star index (1 to 5)
+    const newRating = index + 1;
+    setRating(newRating);
+    onRatingChange(newRating); // Call the callback when the rating changes
   };
 
-  // Handle mouse/touch events for dragging
   const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     setIsDragging(true);
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
@@ -61,13 +68,12 @@ export default function DraggableStars({ initialRating }: { initialRating: numbe
     setIsDragging(false);
   };
 
-  // Create an array of 5 stars based on the current rating
   const starsArray = Array.from({ length: 5 }, (_, index) => {
-    const fillLevel = Math.max(0, Math.min(1, rating - index)); // Determine how much of each star should be filled
+    const fillLevel = Math.max(0, Math.min(1, rating - index));
     return (
       <div
         key={index}
-        onClick={() => updateRatingFromClick(index)} // Handle tap/click for each star
+        onClick={() => updateRatingFromClick(index)}
         className="cursor-pointer"
       >
         <Star x={fillLevel} />
@@ -89,4 +95,6 @@ export default function DraggableStars({ initialRating }: { initialRating: numbe
       {starsArray}
     </div>
   );
-}
+};
+
+export default DraggableStars;
