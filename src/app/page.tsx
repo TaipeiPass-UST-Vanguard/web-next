@@ -27,7 +27,7 @@ export default function Page() {
   } as UserEntity;
 
   // return (
-    
+
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [storageGroups, setStorageGroups] = useState<StorageGroupViewModel[]>([]);
   const [storages, setStorages] = useState<StorageViewModel[]>([]);
@@ -40,6 +40,7 @@ export default function Page() {
 
   async function fetchAllStorage(groupId: number) {
     const entities = await storageUsecase.getAllStorage(groupId);
+    console.debug(entities);
     setStorages(entities.map(entity => new StorageViewModel(entity)));
   }
 
@@ -47,8 +48,6 @@ export default function Page() {
     fetchAllStorageGroup().catch(console.error);
   }, []);
 
-<<<<<<< HEAD
-=======
   function handleLocationClicked(index: number) {
     const groupId = storageGroups[index].id;
     fetchAllStorage(groupId).catch(console.error);
@@ -56,10 +55,9 @@ export default function Page() {
     setIsDrawerOpen(true);
   }
 
->>>>>>> 4068b50c732be693c940503680b67521a491a643
   return (
     <div className="h-screen relative">
-       <div className="absolute top-10 h-10 w-full z-10 p-4">
+      <div className="absolute top-20 h-fit w-full z-10 p-4">
         <NavBar user={fakeUser} />
       </div>
       <div className="absolute inset-0 z-0">
@@ -67,7 +65,7 @@ export default function Page() {
           locations={storageGroups.map(group => [group.latitude, group.longitude])}
           onClick={handleLocationClicked}
         />
-         {/* <Map /> */}
+        {/* <Map /> */}
       </div>
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         {
