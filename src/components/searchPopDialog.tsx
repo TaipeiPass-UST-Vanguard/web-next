@@ -16,22 +16,12 @@ const SearchDrawer = ({ items }: { items: CommodityViewModel[] }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
-    if (items.length === 0) setIsOpen(false);
-  }, []);
-
-  useEffect(() => {
-    if (items.length > 0) setIsOpen(true);
+    setIsOpen(true);
   }, [items])
 
   return items.length === 0
     ? (
-      <Drawer open={isOpen} onOpenChange={(isOpen) => { setIsOpen(isOpen) }} >
-        <DrawerContent className="w-full bg-white p-4 rounded-t-2xl max-h-[500px]"  >
-          <div className="flex flex-row items-center justify-center">
-            EMPTY
-          </div>
-        </DrawerContent >
-      </Drawer >
+      <></>
     )
     : (
       <Drawer open={isOpen} onOpenChange={(isOpen) => { setIsOpen(isOpen) }} >
