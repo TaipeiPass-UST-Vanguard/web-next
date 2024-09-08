@@ -16,7 +16,11 @@ const SearchDrawer = ({ items }: { items: CommodityViewModel[] }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
-    setIsOpen(true);
+    if (items.length === 0) setIsOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (items.length > 0) setIsOpen(true);
   }, [items])
 
   return items.length === 0

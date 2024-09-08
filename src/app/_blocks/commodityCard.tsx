@@ -45,13 +45,14 @@ export function CommodityCard(
   const user = useContext(UserContext);
 
   useEffect(() => {
-    setOpen(true);
-  }, [commodityViewModel.receiverId, commodityViewModel.id]);
-
-  useEffect(() => {
     rewardUsecase.getUserReward(user.id).then((reward) => {setRating(reward.meanReward)});
-
-  }, [open]);
+    
+    let show = 
+    commodityViewModel.status === "receiving" && commodityViewModel.receiverId === user.id 
+    || commodityViewModel.status === "giving" && commodityViewModel.userId === user.id;
+    setShowButton(show)
+    setOpen(true);
+  }, [commodityViewModel.receiverId, commodityViewModel.id, commodityViewModel.status, commodityViewModel.userId]);
 
   return (
     <>
@@ -65,7 +66,7 @@ export function CommodityCard(
           }
         }}
       >
-        <DrawerContent className="backdrop-blur-md bg-white/50 max-h-[600px] h-fit w-full flex flex-col justify-start items-start">
+        <DrawerContent className="backdrop-blur-md bg-white/50 max-h-[700px] h-fit w-full flex flex-col justify-start items-start">
           <DrawerHeader className="w-full flex flex-col justify-start items-start space-y-1">
             <ImageCarousel images={commodityViewModel.images.map(id => new URL(`/api/image/${id}`, BACKEND_URL).href)} />
             <div>
@@ -96,7 +97,7 @@ export function CommodityCard(
             <div className="w-full flex flex-row px-4 py-2 space-x-2">
               <div className="w-full">
                 <InfoBlocks label={"剩餘領物時間"} value={
-                  <Timer className="text-xl" initialDuration={
+                  <Timer className="w-full flex flex-col justify-center items-center text-4xl font-mono text-sky-950" initialDuration={
                     commodityViewModel.receiveExpireDuration
                   } />
                 } />
@@ -107,7 +108,7 @@ export function CommodityCard(
             <div className="w-full flex flex-row px-4 py-2 space-x-2">
               <div className="w-full">
                 <InfoBlocks label={"剩餘擺貨時間"} value={
-                  <Timer className="text-xl" initialDuration={
+                  <Timer className="w-full flex flex-col justify-center items-center text-4xl font-mono text-sky-950" initialDuration={
                     commodityViewModel.giveExpireDuration
                   } />
                 } />
@@ -170,7 +171,7 @@ export function CommodityCard(
                       status: CommodityStatus.pending,
                     });
                     // setShowRating(true);
-                    // route.push(`/commodity/${commodityViewModel.id}`)
+                    route.refresh();
                   }}>
                     <div className="flex flex-row justify-center items-center space-x-2">
                       <LuCheck />
@@ -194,8 +195,6 @@ export function CommodityCard(
                     </div>
                   </Button>
                 )}
-
-
               </>
             )}
           </DrawerFooter>
