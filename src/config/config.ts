@@ -1,1 +1,1 @@
-export const BACKEND_URL = "http://192.168.0.8:5000";
+export const BACKEND_URL = "https://taipeipass.squidspirit.com";
