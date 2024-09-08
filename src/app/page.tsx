@@ -10,6 +10,7 @@ import { CommodityCard } from "./_blocks/commodityCard";
 import { UserContext } from "./_context/userContext";
 import { PositionContext } from "./_context/positionContext";
 import { CreateCommodityForm } from "./_blocks/createCommodityForm";
+import CommodityStatus from "@/module/commodity/domain/commodityStatus";
 
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 const Map = dynamic(() => import("@/components/map"), {
@@ -48,14 +49,14 @@ function _HomePage() {
     };
     const fetchUserCurrentOrder = async () => {
       if (user) {
-        const order = await commodityUsecase.getAllCommodity({receiverId: user.id});
+        const order = await commodityUsecase.getAllCommodity({receiverId: user.id, status: CommodityStatus.receiving});
         if (order && order.length > 0) {
           setCommodityViewModel(new CommodityViewModel(order[0]));
           // setCurrentCommodityViewModel(new CommodityViewModel(order[0]));
           // route.push(pathName + `?commodityId=${order[0].id}`);
           return 
         }
-        const order2 = await commodityUsecase.getAllCommodity({giverId: user.id});
+        const order2 = await commodityUsecase.getAllCommodity({giverId: user.id, status: CommodityStatus.giving});
         if (order2 && order2.length > 0) {
           setCommodityViewModel(new CommodityViewModel(order2[0]));
           // setCurrentCommodityViewModel(new CommodityViewModel(order2[0]));

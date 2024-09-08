@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { UserEntity } from "@/module/user/doamain/userEntity";
 import { useForm } from "react-hook-form";
-import { LuAlignJustify, LuSearch } from "react-icons/lu";
+import { LuAlignJustify, LuRefreshCcw, LuSearch } from "react-icons/lu";
 import CommodityUsecase from "@/module/commodity/application/commodityUsecase"
 import CommodityRepoImpl from "@/module/commodity/presenter/commodityRepoImpl";
 import CommodityEntity from "@/module/commodity/domain/commodityEntity";
@@ -15,10 +15,16 @@ import { useContext, useState } from "react";
 import CommodityViewModel from "@/module/commodity/presenter/commodityViewModel";
 import { CommodityQueryParams } from "@/module/commodity/domain/commodityRepo";
 import { PositionContext } from "../_context/positionContext";
+import CommodityStatus from "@/module/commodity/domain/commodityStatus";
+import { useRouter } from "next/navigation";
 const commodityUsecase = new CommodityUsecase(new CommodityRepoImpl());
 
 async function search({ keyword, location }: CommodityQueryParams) {
-  const entities = await commodityUsecase.getAllCommodity({ keyword, location });
+  const entities = await commodityUsecase.getAllCommodity({
+    keyword: keyword,
+    location: location,
+    status: CommodityStatus.pending,
+  });
   const newList: CommodityEntity[] = [];
   entities.map((item, _) => {
     newList.push(item)
@@ -65,6 +71,8 @@ export function NavBar({ user }: {
     setCommodityList(commodityList.map(entity => new CommodityViewModel(entity)));
   }
 
+  const router = useRouter();
+
   return (
     <div>
       <Form {...form}>
@@ -87,8 +95,12 @@ export function NavBar({ user }: {
               </FormItem>
             )}
           />
-          <Button type="button" variant={'ghost'} size='icon'>
-            <LuAlignJustify />
+          <Button type="button" variant={'ghost'} size='icon' onClick={
+            () => {
+              router.refresh();
+            }
+          }>
+            <LuRefreshCcw />
           </Button>
         </form>
 

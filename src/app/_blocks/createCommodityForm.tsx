@@ -192,7 +192,7 @@ export function CreateCommodityForm() {
                           >
                             <SelectValue
                               className="w-full"
-                              placeholder="Select a verified email to display"
+                              placeholder="請選擇物品類別"
                             />
                           </SelectTrigger>
                         </FormControl>

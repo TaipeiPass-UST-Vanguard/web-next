@@ -28,7 +28,7 @@ export default class CommodityUsecase {
     /**
      * @param status Use `CommodityStatus` in "@/module/commodity/domain/commodityStatus"
      */
-    async updateCommodityStatus(id: number, params: CommodityUpdateParams): Promise<CommodityEntity> {
+    async updateCommodityStatus(id: number, params: CommodityUpdateParams): Promise<void> {
         return this._repo.update(id, params);
     }
 
