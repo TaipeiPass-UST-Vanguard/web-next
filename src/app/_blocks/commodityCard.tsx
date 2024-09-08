@@ -48,8 +48,8 @@ export function CommodityCard(
     rewardUsecase.getUserReward(user.id).then((reward) => {setRating(reward.meanReward)});
     
     const show = 
-    commodityViewModel.status === "receiving" && commodityViewModel.receiverId === user.id 
-    || commodityViewModel.status === "giving" && commodityViewModel.userId === user.id;
+    commodityViewModel.receiverId === user.id 
+    || commodityViewModel.userId === user.id;
     setShowButton(show)
     setOpen(true);
   }, [commodityViewModel.receiverId, commodityViewModel.id, commodityViewModel.status, commodityViewModel.userId]);
@@ -61,7 +61,7 @@ export function CommodityCard(
         onOpenChange={(value) => {
           setOpen(value);
           if (value === false) {
-            setShowButton(true); // 關閉時顯示按鈕
+            // setShowButton(true); // 關閉時顯示按鈕
             route.push(pathName);
           }
         }}
@@ -200,14 +200,25 @@ export function CommodityCard(
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
-      {showButton && (
+      {(showButton && commodityViewModel.status === 'receiving') && (
         <div className="fixed bottom-4 right-4">
           <div className="rounded-lg border-4 cursor-pointer" onClick={() => {
             setOpen(true);
-            setShowButton(false); // 隱藏按鈕
           }}>
-            <InfoBlocks label="取貨時間" value={
+            <InfoBlocks label="取物時間" value={
               <Timer className="text-xl" initialDuration={commodityViewModel.receiveExpireDuration} />
+            } />
+          </div>
+        </div>
+      )}
+      {
+      (showButton && commodityViewModel.status === 'giving') && (
+        <div className="fixed bottom-4 right-4">
+          <div className="rounded-lg border-4 cursor-pointer" onClick={() => {
+            setOpen(true);
+          }}>
+            <InfoBlocks label="放物時間" value={
+              <Timer className="text-xl" initialDuration={commodityViewModel.giveExpireDuration} />
             } />
           </div>
         </div>

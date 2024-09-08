@@ -58,7 +58,7 @@ function CommoditySearchCard(
 
 
   return (
-    <DrawerClose className="w-full p-4 bg-gray-100 rounded-lg ">
+    <DrawerClose className="w-full p-4 bg-gray-100 rounded-lg " asChild>
       <div className="flex flex-col justify-start items-start" onClick={() => {
         const params = new URLSearchParams(
           {

@@ -97,7 +97,7 @@ export function NavBar({ user }: {
           />
           <Button type="button" variant={'ghost'} size='icon' onClick={
             () => {
-              router.refresh();
+              window.location.reload();
             }
           }>
             <LuRefreshCcw />
