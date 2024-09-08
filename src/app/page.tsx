@@ -76,7 +76,7 @@ function _HomePage() {
 
   return (
     <div className="h-screen relative">
-      <div className="absolute top-20 h-fit w-full z-10 p-4">
+      <div className="absolute top-10 h-fit w-full z-10 p-4">
         <NavBar user={user} />
       </div>
       <div className="absolute inset-0 z-0">
