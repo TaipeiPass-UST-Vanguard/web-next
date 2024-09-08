@@ -47,7 +47,7 @@ export function CommodityCard(
   useEffect(() => {
     rewardUsecase.getUserReward(user.id).then((reward) => {setRating(reward.meanReward)});
     
-    let show = 
+    const show = 
     commodityViewModel.status === "receiving" && commodityViewModel.receiverId === user.id 
     || commodityViewModel.status === "giving" && commodityViewModel.userId === user.id;
     setShowButton(show)
